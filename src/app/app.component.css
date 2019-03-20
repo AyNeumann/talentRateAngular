@@ -1,0 +1,8 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.toolbarBtn {
+    margin-left: 1vw;
+    margin-right: 1vw;
+}

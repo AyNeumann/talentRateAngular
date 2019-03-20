@@ -1,0 +1,23 @@
+table {
+    width: 100%;
+}
+
+.searchEvalForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.searchInput {
+    width: 40%;
+}
+
+button {
+    height: 5vh;
+    margin-top: 2vh;
+}
+  
+.tableFilterInput {
+    font-size: 14px;
+    width: 100%;
+}
