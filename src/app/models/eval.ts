@@ -1,29 +1,17 @@
+import { Student } from './student';
+
 export class Eval {
     constructor(
-        school: string,
-        promotion: string,
-        module: string,
-        category: string,
-        skill: string,
-        homework: string,
-        student: {
-            name: string
-        },
-        score: string,
-        obtainable: string
-    ) {}
+        public school: string,
+        public promotion: string,
+        public module: string,
+        public category: string,
+        public skill: string,
+        public homework: string,
+        public student: Student,
+        public score: string,
+        public obtainable: string
+    ) { }
+
 }
 
-/*export interface Eval {
-        school: string;
-        module: string;
-        promotion: string;
-        category: string;
-        skill: string;
-        homework: string;
-        student: {
-            name: string;
-        };
-        score: string;
-        obtainable: string;
-}*/

@@ -3,3 +3,7 @@
     margin: auto;
     width: 40%;
 }
+
+.submitBtn {
+    align-self: flex-end;
+}

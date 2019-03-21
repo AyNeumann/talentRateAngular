@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Eval } from 'src/app/models/eval';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 
+import { MatSnackBar } from '@angular/material';
+
 @Component({
   selector: 'app-create-eval',
   templateUrl: './create-eval.component.html',
@@ -12,7 +14,7 @@ export class CreateEvalComponent implements OnInit {
 
   createEvalForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private evalService: EvalServiceService) { }
+  constructor(private formBuilder: FormBuilder, private evalService: EvalServiceService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.initialisationForm();
@@ -29,7 +31,7 @@ export class CreateEvalComponent implements OnInit {
       student: [''],
       score: [''],
       obtainable: ['']
-    })
+    });
   }
 
   onSubmit() {
@@ -45,12 +47,24 @@ export class CreateEvalComponent implements OnInit {
       formValue['score'],
       formValue['obtainable'],
     );
+    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
 
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToCreate = data;
-        console.log('[create-eval.components.ts | onSubmit]: ', data);
-      });
+      },
+        error => {
+          alert('Une erreur s\' est produite lors de l\' envoie des données.');
+        }
+      );
+    this.openSnackBar();
+    this.createEvalForm.get('score').setValue('');
+    this.createEvalForm.markAsPristine();
   }
 
+  openSnackBar() {
+    this.snackBar.open('Données envoyées!', 'OK', {
+      duration: 2000,
+    });
+  }
 }
