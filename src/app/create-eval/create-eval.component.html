@@ -1,16 +1,16 @@
-<div class="container mt-5">
+<div class="container">
   <form class="createEvalForm" [formGroup]="createEvalForm" (ngSubmit)="onSubmit()" #crEvalForm="ngForm">
 
     <mat-form-field class="schoolInput">
       <input matInput placeholder="Ecole" formControlName="school" id="school" name="school" required>
     </mat-form-field>
 
-    <mat-form-field class="moduleInput">
-      <input matInput placeholder="Module" formControlName="module" id="module" name="module" required>
-    </mat-form-field>
-
     <mat-form-field class="promotionInput">
       <input matInput placeholder="Promotion" formControlName="promotion" id="promotion" name="promotion" required>
+    </mat-form-field>
+
+    <mat-form-field class="moduleInput">
+      <input matInput placeholder="Module" formControlName="module" id="module" name="module" required>
     </mat-form-field>
 
     <mat-form-field class="categoryInput">
@@ -18,7 +18,7 @@
     </mat-form-field>
 
     <mat-form-field class="skillInput">
-      <input matInput placeholder="Skill ?" formControlName="skill" id="skill" name="skill" required>
+      <input matInput placeholder="Compétence" formControlName="skill" id="skill" name="skill" required>
     </mat-form-field>
 
     <mat-form-field class="homeworkInput">
@@ -30,14 +30,16 @@
     </mat-form-field>
 
     <mat-form-field class="scoreInput">
-      <input matInput placeholder="Score" formControlName="score" id="score" name="score" required pattern="^[0-9][0-9]?[0-9]?$">
+      <input matInput placeholder="Score" formControlName="score" id="score" name="score" required
+        pattern="^[0-9][0-9]?[0-9]?$">
     </mat-form-field>
 
     <mat-form-field class="obtainableInput">
-      <input matInput placeholder="Nombre de points" formControlName="obtainable" id="obtainable" name="obtainable" required pattern="^[0-9][0-9]?[0-9]?$">
+      <input matInput placeholder="Nombre de points" formControlName="obtainable" id="obtainable" name="obtainable"
+        required pattern="^[0-9][0-9]?[0-9]?$">
     </mat-form-field>
 
-    <button mat-raised-button class="float-right" type="submit" color="primary" 
+    <button mat-raised-button class="float-right" type="submit" color="primary"
       [disabled]="createEvalForm.pristine || createEvalForm.invalid">Valider
     </button>
   </form>

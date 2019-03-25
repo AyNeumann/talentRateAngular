@@ -3,6 +3,7 @@ import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { Eval } from 'src/app/models/eval';
 import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-search-eval',
@@ -12,7 +13,8 @@ import { FormControl } from '@angular/forms';
 export class SearchEvalComponent implements OnInit {
 
   private evalData: Eval[] = [];
-  displayedColumns: string[] = ['school', 'promotion', 'module', 'category', 'skill', 'homework', 'student', 'score', 'obtainable'];
+  displayedColumns: string[] = ['school', 'promotion', 'module', 'category', 'skill', 'homework', 
+  'student', 'score', 'obtainable', 'studentEvalDetails'];
   dataSource = new MatTableDataSource();
   field = new FormControl();
   data = new FormControl();
@@ -21,14 +23,15 @@ export class SearchEvalComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  constructor(private evalService: EvalServiceService) { }
+  constructor(private evalService: EvalServiceService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.evalService.retrieveAllEvals().subscribe(
       (response: any[]) => {
         this.evalData = response;
         console.log('[search-eval.components.ts | ngOnInit]: - response ', response);
-        console.log('[search-eval.components.ts | ngOnInit]: - evalData', this.evalData);
         this.dataSource = new MatTableDataSource(this.evalData);
       }
     );
@@ -44,6 +47,9 @@ export class SearchEvalComponent implements OnInit {
     );
   }
 
+  editEval(evalId) {
+    this.router.navigate(['/editeval'], evalId);
+  }
 }
 
 

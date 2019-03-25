@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SearchEvalComponent } from './search-eval/search-eval.component';
 import { CreateEvalComponent } from './create-eval/create-eval.component';
+import { UpdateEvalComponent } from './update-eval/update-eval.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -21,11 +22,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     SearchEvalComponent,
-    CreateEvalComponent
+    CreateEvalComponent,
+    UpdateEvalComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { Student } from './student';
 
 export class Eval {
     constructor(
+        public id: string,
         public school: string,
         public promotion: string,
         public module: string,

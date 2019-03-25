@@ -37,9 +37,10 @@ export class CreateEvalComponent implements OnInit {
   onSubmit() {
     const formValue = this.createEvalForm.value;
     const newEval = new Eval(
+      '',
       formValue['school'],
-      formValue['module'],
       formValue['promotion'],
+      formValue['module'],
       formValue['category'],
       formValue['skill'],
       formValue['homework'],
