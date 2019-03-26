@@ -1,0 +1,13 @@
+.container {
+    margin-top: 5vh;
+}
+
+.mat-form-field {
+    display: block;
+    margin: auto;
+    width: 40%;
+}
+
+.submitBtn {
+    align-self: flex-end;
+}

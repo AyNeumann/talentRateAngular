@@ -13,8 +13,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class SearchEvalComponent implements OnInit {
 
   private evalData: Eval[] = [];
-  displayedColumns: string[] = ['school', 'promotion', 'module', 'category', 'skill', 'homework', 
-  'student', 'score', 'obtainable', 'studentEvalDetails'];
+  displayedColumns: string[] = ['school', 'promotion', 'module', 'category', 'skill', 'homework',
+  'student', 'score', 'obtainable', 'editEval', 'deleteEval'];
   dataSource = new MatTableDataSource();
   field = new FormControl();
   data = new FormControl();
@@ -48,7 +48,8 @@ export class SearchEvalComponent implements OnInit {
   }
 
   editEval(evalId) {
-    this.router.navigate(['/editeval'], evalId);
+    console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
+    this.router.navigate(['/updateeval', evalId]);
   }
 }
 

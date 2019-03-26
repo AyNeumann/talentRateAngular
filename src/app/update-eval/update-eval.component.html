@@ -1,5 +1,47 @@
 <div class="container">
-  <p>
-    edit-eval works!
-  </p>
+  <form class="updateEvalForm" [formGroup]="updateEvalForm" (ngSubmit)="onSubmit()" #upEvalForm="ngForm">
+
+    <mat-form-field class="schoolInput">
+      <input matInput placeholder="Ecole" formControlName="school" id="school" name="school" required>
+    </mat-form-field>
+
+    <mat-form-field class="promotionInput">
+      <input matInput placeholder="Promotion" formControlName="promotion" id="promotion" name="promotion" required>
+    </mat-form-field>
+
+    <mat-form-field class="moduleInput">
+      <input matInput placeholder="Module" formControlName="module" id="module" name="module" required>
+    </mat-form-field>
+
+    <mat-form-field class="categoryInput">
+      <input matInput placeholder="Categorie" formControlName="category" id="category" name="category" required>
+    </mat-form-field>
+
+    <mat-form-field class="skillInput">
+      <input matInput placeholder="Compétence" formControlName="skill" id="skill" name="skill" required>
+    </mat-form-field>
+
+    <mat-form-field class="homeworkInput">
+      <input matInput placeholder="Devoir" formControlName="homework" id="homework" name="homework" required>
+    </mat-form-field>
+
+    <mat-form-field class="studentInput">
+      <input matInput placeholder="Nom de l'étudiant" formControlName="student" id="student" name="student" required>
+    </mat-form-field>
+
+    <mat-form-field class="scoreInput">
+      <input matInput placeholder="Score" formControlName="score" id="score" name="score" required
+        pattern="^[0-9][0-9]?[0-9]?$">
+    </mat-form-field>
+
+    <mat-form-field class="obtainableInput">
+      <input matInput placeholder="Score max" formControlName="obtainable" id="obtainable" name="obtainable"
+        required pattern="^[0-9][0-9]?[0-9]?$">
+    </mat-form-field>
+
+    <button mat-raised-button class="float-right" type="submit" color="warn"
+    [disabled]="updateEvalForm.pristine || updateEvalForm.invalid">Modifier
+    </button>
+  </form>
 </div>
+

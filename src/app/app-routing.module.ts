@@ -8,7 +8,7 @@ const routes: Routes = [
   {path: '', component: SearchEvalComponent},
   {path: 'search', component: SearchEvalComponent},
   {path: 'create', component: CreateEvalComponent},
-  {path: 'updateeval', component: UpdateEvalComponent} //A AJOUTER POUR PARAMS: /:evalId
+  {path: 'updateeval/:evalId', component: UpdateEvalComponent}
 ];
 
 @NgModule({

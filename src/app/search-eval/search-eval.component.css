@@ -1,3 +1,7 @@
+.container {
+    margin-top: 5vh;
+}
+
 table {
     width: 100%;
 }
@@ -20,4 +24,12 @@ table {
 .tableFilterInput {
     font-size: 14px;
     width: 100%;
+}
+
+.mat-header-cell {
+    text-align: center;
+}
+
+.mat-cell {
+    text-align: center;
 }

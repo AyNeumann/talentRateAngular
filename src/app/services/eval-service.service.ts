@@ -26,4 +26,9 @@ export class EvalServiceService {
   searchEval(field, data) {
     return this.http.get(`${this.baseUrl}/?field=${field}&data=${data}`);
   }
+
+  retrieveEvalbyId(id) {
+    console.log('[eval-service.service.ts | retrieveEvalbyId]: - id: ', id);
+    return this.http.get(`${this.baseUrl}/getbyid?id=${id}`);
+  }
 }
