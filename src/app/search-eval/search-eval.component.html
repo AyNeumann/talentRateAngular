@@ -85,7 +85,7 @@
       <th mat-header-cell *matHeaderCellDef> Supprimer </th>
       <td mat-cell *matCellDef="let eval">
         <button mat-button>
-          <mat-icon class="toolbarIcon">delete</mat-icon> <!--(click)="editEval(eval.evalId)"-->
+          <mat-icon class="toolbarIcon" (click)="deleteEval(eval.evalId)">delete</mat-icon>
         </button>
       </td>
     </ng-container>

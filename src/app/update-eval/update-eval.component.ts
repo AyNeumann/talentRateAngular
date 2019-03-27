@@ -45,6 +45,7 @@ export class UpdateEvalComponent implements OnInit {
         }
       );
     });
+    this.updateEvalForm.markAsPristine();
   }
 
   initialisationForm() {
@@ -91,9 +92,9 @@ export class UpdateEvalComponent implements OnInit {
     );
     console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
 
-    this.evalService.createEval(updatedEval)
+    this.evalService.updateEval(this.evalId, updatedEval)
       .subscribe(data => {
-        this.evalService.evalToCreate = data;
+        this.evalService.evalToSend = data;
       },
         error => {
           alert('Une erreur s\' est produite lors de l\' envoie des données.');
