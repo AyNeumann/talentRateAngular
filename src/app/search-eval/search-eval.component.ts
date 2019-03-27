@@ -51,6 +51,10 @@ export class SearchEvalComponent implements OnInit {
     console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
     this.router.navigate(['/updateeval', evalId]);
   }
+
+  deleteEval(evalId) {
+    this.evalService.deleteEval(evalId).subscribe();
+  }
 }
 
 

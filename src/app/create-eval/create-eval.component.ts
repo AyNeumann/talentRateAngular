@@ -52,7 +52,7 @@ export class CreateEvalComponent implements OnInit {
 
     this.evalService.createEval(newEval)
       .subscribe(data => {
-        this.evalService.evalToCreate = data;
+        this.evalService.evalToSend = data;
       },
         error => {
           alert('Une erreur s\' est produite lors de l\' envoie des données.');

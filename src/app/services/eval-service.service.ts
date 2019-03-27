@@ -8,15 +8,14 @@ import { Eval } from 'src/app/models/eval';
 })
 export class EvalServiceService {
 
-  public evalToCreate;
+  public evalToSend;
 
   private baseUrl = 'http://localhost:8080/eval';
 
   constructor(private http: HttpClient) { }
 
-  createEval(evalToCreate: Eval): Observable<Object> {
-    console.log('[eval-service | createEval]:', evalToCreate);
-    return this.http.post(`${this.baseUrl}/`, evalToCreate);
+  createEval(evalToSend: Eval): Observable<Object> {
+    return this.http.post(`${this.baseUrl}/`, evalToSend);
   }
 
   retrieveAllEvals() {
@@ -28,7 +27,15 @@ export class EvalServiceService {
   }
 
   retrieveEvalbyId(id) {
-    console.log('[eval-service.service.ts | retrieveEvalbyId]: - id: ', id);
     return this.http.get(`${this.baseUrl}/getbyid?id=${id}`);
+  }
+
+  updateEval(id, evalToSend: Eval) {
+    console.log('[eval-service.service.ts |updatedEval]: ', `${this.baseUrl}/?id=${id}`, evalToSend );
+    return this.http.post(`${this.baseUrl}/${id}`, evalToSend);
+  }
+
+  deleteEval(id) {
+    return this.http.delete(`${this.baseUrl}/deleteeval?id=${id}`);
   }
 }
