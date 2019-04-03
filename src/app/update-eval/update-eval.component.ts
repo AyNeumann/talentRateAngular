@@ -33,14 +33,14 @@ export class UpdateEvalComponent implements OnInit {
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         response => {
           this.evalData = response;
-          console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
-          console.log('[update-eval.components.ts | ngOnInit]:  - evalDagta', this.evalData);
+          //console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
+          //console.log('[update-eval.components.ts | ngOnInit]:  - evalDagta', this.evalData);
         },
         err => {
           console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
-          console.log('[update-eval.components.ts | ngOnInit]: Get eval');
+          //console.log('[update-eval.components.ts | ngOnInit]: Get eval');
           this.formUpdating();
         }
       );
@@ -90,7 +90,7 @@ export class UpdateEvalComponent implements OnInit {
       formValue['score'],
       formValue['obtainable'],
     );
-    console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
+    //console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
 
     this.evalService.updateEval(this.evalId, updatedEval)
       .subscribe(data => {

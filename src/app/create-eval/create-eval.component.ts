@@ -48,7 +48,7 @@ export class CreateEvalComponent implements OnInit {
       formValue['score'],
       formValue['obtainable'],
     );
-    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
+    //console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
 
     this.evalService.createEval(newEval)
       .subscribe(data => {

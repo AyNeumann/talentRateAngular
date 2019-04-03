@@ -22,7 +22,6 @@ export class EvalServiceService {
   }
 
   retrieveAllEvals() {
-    console.log('[Eval Service | retrieveAllEval] - retrieveAllEvals: ', this.baseUrl);
     return this.http.get(`${this.baseUrl}/`);
   }
 
