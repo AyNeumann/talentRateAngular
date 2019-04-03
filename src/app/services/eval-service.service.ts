@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Eval } from 'src/app/models/eval';
-import { environment } from 'src/environments/environment';
+// On dev: import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,6 @@ export class EvalServiceService {
 
   public evalToSend;
 
-  //'http://localhost:8080/'
   private API_URL = environment.API_URL;
   private baseUrl = `${this.API_URL}eval`;
 
