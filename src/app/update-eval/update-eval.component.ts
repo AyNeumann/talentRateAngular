@@ -105,7 +105,7 @@ export class UpdateEvalComponent implements OnInit {
   }
 
   openSnackBar() {
-    this.snackBar.open('Données modifiées!', 'OK', {
+    this.snackBar.open('Envoie des données en cours...', 'OK', {
       duration: 2000,
     });
   }

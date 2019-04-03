@@ -31,11 +31,19 @@ export class EvalServiceService {
   }
 
   updateEval(id, evalToSend: Eval) {
-    console.log('[eval-service.service.ts |updatedEval]: ', `${this.baseUrl}/?id=${id}`, evalToSend );
     return this.http.post(`${this.baseUrl}/${id}`, evalToSend);
   }
 
+  // TODO: Create back end.
   deleteEval(id) {
     return this.http.delete(`${this.baseUrl}/deleteeval?id=${id}`);
+  }
+
+  retrieveGeneralGraphData(graphType){
+    return this.http.get(`${this.baseUrl}/getgraphdata?graphType=${graphType}`);
+  }
+
+  retrieveFilteredGraphData(field, data, graphType) {
+    return this.http.get(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
   }
 }

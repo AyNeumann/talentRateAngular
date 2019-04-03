@@ -64,7 +64,7 @@ export class CreateEvalComponent implements OnInit {
   }
 
   openSnackBar() {
-    this.snackBar.open('Données envoyées!', 'OK', {
+    this.snackBar.open('Envoie des données en cours...', 'OK', {
       duration: 2000,
     });
   }

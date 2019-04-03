@@ -70,22 +70,15 @@
       <td mat-cell *matCellDef="let eval"> {{eval.obtainable}} </td>
     </ng-container>
 
-    <!--Edit eval btn-->
-    <ng-container matColumnDef="editEval">
-      <th mat-header-cell *matHeaderCellDef> Editer </th>
+    <!--Actions btn-->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let eval">
-        <button mat-button>
-          <mat-icon class="toolbarIcon" (click)="editEval(eval.evalId)">edit</mat-icon>
+        <button mat-raised-button color="primary">
+          <mat-icon class="actionIcon" (click)="editEval(eval.evalId)">edit</mat-icon>
         </button>
-      </td>
-    </ng-container>
-
-    <!--Delete eval btn-->
-    <ng-container matColumnDef="deleteEval">
-      <th mat-header-cell *matHeaderCellDef> Supprimer </th>
-      <td mat-cell *matCellDef="let eval">
-        <button mat-button>
-          <mat-icon class="toolbarIcon" (click)="deleteEval(eval.evalId)">delete</mat-icon>
+        <button mat-raised-button color="warn">
+          <mat-icon class="actionIcon" (click)="deleteEval(eval.evalId)">delete</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -93,5 +86,19 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div class="graphContainer">
+    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="totalScoreGrapData" [gradient]="gradient" [xAxis]="showXAxis"
+      [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+    </ngx-charts-bar-vertical-stacked>
+  </div>
+
+  <div class="graphContainer">
+    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="scorePerSkillGrapData" [gradient]="gradient" [xAxis]="showXAxis"
+      [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+    </ngx-charts-bar-vertical-stacked>
+  </div>
 
 </div>
