@@ -58,13 +58,13 @@ export class SearchEvalComponent implements OnInit {
     );
     this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
       (response: any[]) => {
-        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General graph ', response);
+        console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General graph ', response);
         this.totalScoreGrapData = response;
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
       (response: any[]) => {
-        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General Skill graph ', response);
+        console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General Skill graph ', response);
         this.scorePerSkillGrapData = response;
       }
     );
@@ -74,26 +74,26 @@ export class SearchEvalComponent implements OnInit {
     this.evalService.searchEval(this.field.value, this.data.value).subscribe(
       (response: any[]) => {
         this.evalData = response;
-        //console.log('[search-eval.components.ts | searchEval]: ', response);
+        // console.log('[search-eval.components.ts | searchEval]: ', response);
         this.dataSource = new MatTableDataSource(this.evalData);
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType1).subscribe(
       (response: any[]) => {
         this.totalScoreGrapData = response;
-        //console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - General graph w/filter ', response);
+        // console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - General graph w/filter ', response);
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType2).subscribe(
       (response: any[]) => {
         this.scorePerSkillGrapData = response;
-        //console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - Skill graph w/filter', response);
+        // console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - Skill graph w/filter', response);
       }
     );
   }
 
   editEval(evalId) {
-    //console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
+    // console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
     this.router.navigate(['/updateeval', evalId]);
   }
 
@@ -102,7 +102,7 @@ export class SearchEvalComponent implements OnInit {
   }
 
   onSelect(event) {
-    //console.log(event);
+    // console.log(event);
   }
 }
 

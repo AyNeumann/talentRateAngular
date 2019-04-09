@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { EnvServiceProvider } from './env.service.provider';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -50,7 +51,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatIconModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [EnvServiceProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

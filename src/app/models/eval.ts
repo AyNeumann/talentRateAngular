@@ -10,8 +10,8 @@ export class Eval {
         public skill: string,
         public homework: string,
         public student: Student,
-        public score: string,
-        public obtainable: string
+        public score: number,
+        public obtainable: number
     ) { }
 
 }

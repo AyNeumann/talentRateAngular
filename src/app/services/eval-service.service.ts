@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Eval } from 'src/app/models/eval';
-// On dev: import { environment } from 'src/environments/environment.prod';
-import { environment } from 'src/environments/environment.prod';
+import { EnvService } from '../env.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +11,10 @@ export class EvalServiceService {
 
   public evalToSend;
 
-  private API_URL = environment.API_URL;
+  API_URL = this.env.apiUrl;
   private baseUrl = `${this.API_URL}eval`;
 
-  constructor(private http: HttpClient) { };
+  constructor(private http: HttpClient, private env: EnvService) { }
 
   createEval(evalToSend: Eval): Observable<Object> {
     return this.http.post(`${this.baseUrl}/`, evalToSend);
