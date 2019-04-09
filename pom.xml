@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.talentRate</groupId>
+	<artifactId>angular</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<fornt-end-maven-plugin-version>1.7.5</fornt-end-maven-plugin-version>
+		<dist-dir>${basedir}/dist/TalentRateClient</dist-dir>
+		<deployement-format>dir</deployement-format>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- based on sample : https://github.com/eirslett/frontend-maven-plugin/blob/master/frontend-maven-plugin/src/it/example%20project/pom.xml -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${fornt-end-maven-plugin-version}</version>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<!-- See https://nodejs.org/en/download/ for latest node and npm (lts) 
+								versions -->
+							<nodeVersion>v8.11.4</nodeVersion>
+							<npmVersion>6.9.0</npmVersion>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<!-- Optional configuration which provides for running any npm command -->
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+					<!-- <execution> <id>javascript tests</id> <goals> <goal>karma</goal> 
+						</goals> <configuration> <karmaConfPath>src/test/javascript/karma.conf.ci.js</karmaConfPath> 
+						</configuration> </execution> -->
+
+
+					<execution>
+						<id>prod</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run-script build</arguments>
+						</configuration>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+
+			</plugin>
+
+			<plugin>
+				<!-- NOTE: We don't need a groupId specification because the group is 
+					org.apache.maven.plugins ...which is assumed by default. -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
+					<descriptors>
+						<descriptor>assembly/distribution.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
