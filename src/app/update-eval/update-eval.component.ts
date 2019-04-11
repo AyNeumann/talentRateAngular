@@ -6,6 +6,7 @@ import { Eval } from 'src/app/models/eval';
 
 import { MatSnackBar } from '@angular/material';
 import { CompileTemplateMetadata } from '@angular/compiler';
+import { getQueryValue } from '@angular/core/src/view/query';
 
 @Component({
   selector: 'app-student-update-eval',
@@ -95,18 +96,25 @@ export class UpdateEvalComponent implements OnInit {
     this.evalService.updateEval(this.evalId, updatedEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
+        console.log('[update-eval.components.ts | onSubmit - data]: ', data);
+        console.log(Object.values(data)[0]);
+        if (Object.values(data)[0] === true) {
+          this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
+        } else {
+          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
+        }
       },
         error => {
           alert('Une erreur s\' est produite lors de l\' envoie des données.');
         }
       );
-    this.openSnackBar();
     this.updateEvalForm.markAsPristine();
   }
 
-  openSnackBar() {
-    this.snackBar.open('Envoie des données en cours...', 'OK', {
-      duration: 2000,
+  openSnackBar(message, type) {
+    this.snackBar.open(message, 'OK', {
+      duration: 3000,
+      panelClass: [type],
     });
   }
 

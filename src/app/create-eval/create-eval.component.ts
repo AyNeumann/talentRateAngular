@@ -53,19 +53,24 @@ export class CreateEvalComponent implements OnInit {
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
+        console.log('[update-eval.components.ts | onSubmit - data]: ', data);
+        console.log(Object.values(data)[0]);
+        if (data) {
+          this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
+        }
       },
         error => {
-          alert('Une erreur s\' est produite lors de l\' envoie des données.');
+          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
         }
       );
-    this.openSnackBar();
     this.createEvalForm.get('score').setValue('');
     this.createEvalForm.markAsPristine();
   }
 
-  openSnackBar() {
-    this.snackBar.open('Envoie des données en cours...', 'OK', {
-      duration: 2000,
+  openSnackBar(message, type) {
+    this.snackBar.open(message, 'OK', {
+      duration: 3000,
+      panelClass: [type],
     });
   }
 }
