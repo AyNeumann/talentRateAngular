@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+import { MatSnackBar } from '@angular/material';
+
 @Component({
   selector: 'app-search-eval',
   templateUrl: './search-eval.component.html',
@@ -12,8 +14,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class SearchEvalComponent implements OnInit {
 
+  private dataObtained = false;
+  private dataError = false;
+  private graphOneData = false;
+  private graphTwoData = false;
   private evalData: Eval[] = [];
-  displayedColumns: string[] = ['school', 'promotion', 'module', 'category', 'skill', 'homework',
+  displayedColumns: string[] = ['copy', 'school', 'promotion', 'module', 'category', 'skill', 'homework',
   'student', 'score', 'obtainable', 'actions'];
   dataSource = new MatTableDataSource();
   field = new FormControl();
@@ -47,27 +53,11 @@ export class SearchEvalComponent implements OnInit {
 
   constructor(private evalService: EvalServiceService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.evalService.retrieveAllEvals().subscribe(
-      (response: any[]) => {
-        this.evalData = response;
-        this.dataSource = new MatTableDataSource(this.evalData);
-      }
-    );
-    this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
-      (response: any[]) => {
-        console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General graph ', response);
-        this.totalScoreGrapData = response;
-      }
-    );
-    this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
-      (response: any[]) => {
-        console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General Skill graph ', response);
-        this.scorePerSkillGrapData = response;
-      }
-    );
+    this.getAllDatas();
   }
 
   searchEval() {
@@ -92,6 +82,42 @@ export class SearchEvalComponent implements OnInit {
     );
   }
 
+  removeFilters() {
+    this.getAllDatas();
+  }
+
+  getAllDatas() {
+    this.evalService.retrieveAllEvals().subscribe(
+      (response: any[]) => {
+        this.evalData = response;
+        this.dataSource = new MatTableDataSource(this.evalData);
+        this.dataObtained = true;
+      },
+      error => {
+        this.openSnackBar('Une erreur s\' est produite lors de la récupération envoie des données.', 'snackBarError');
+        this.dataError = true;
+      }
+    );
+    this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
+      (response: any[]) => {
+        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General graph ', response);
+        this.totalScoreGrapData = response;
+        this.graphOneData = true;
+      }
+    );
+    this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
+      (response: any[]) => {
+        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General Skill graph ', response);
+        this.scorePerSkillGrapData = response;
+        this.graphTwoData = true;
+      }
+    );
+  }
+
+  copyEval(evalId) {
+    this.router.navigate(['/copyeval', evalId]);
+  }
+
   editEval(evalId) {
     // console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
     this.router.navigate(['/updateeval', evalId]);
@@ -103,6 +129,13 @@ export class SearchEvalComponent implements OnInit {
 
   onSelect(event) {
     // console.log(event);
+  }
+
+  openSnackBar(message, type) {
+    this.snackBar.open(message, 'OK', {
+      duration: 5000,
+      panelClass: [type],
+    });
   }
 }
 

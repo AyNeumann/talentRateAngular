@@ -9,11 +9,12 @@ table {
 .searchEvalForm {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
 }
 
 .searchInput {
-    width: 40%;
+    width: 30%;
 }
 
 .submitBtn {
@@ -39,11 +40,24 @@ table {
     margin-right: 0.5vw;
 }
 
-.actionIcon {
-    color: #000000;
+.copyIcon {
+    color: black;
+}
+
+.editIcon {
+    color: blue;
+}
+
+.deleteIcon {
+    color: red;
 }
 
 .graphContainer {
     margin-top: 8vh;
     height: 60vh;
+}
+
+mat-progress-spinner {
+    display: block;
+    margin: auto;
 }

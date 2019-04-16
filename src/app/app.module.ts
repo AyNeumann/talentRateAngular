@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SearchEvalComponent } from './search-eval/search-eval.component';
 import { CreateEvalComponent } from './create-eval/create-eval.component';
 import { UpdateEvalComponent } from './update-eval/update-eval.component';
+import { CreateEvalBasedOnComponent } from './create-eval-based-on/create-eval-based-on.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -21,9 +22,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /*ngx-charts*/
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+
+
 
 
 
@@ -32,7 +37,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     AppComponent,
     SearchEvalComponent,
     CreateEvalComponent,
-    UpdateEvalComponent
+    UpdateEvalComponent,
+    CreateEvalBasedOnComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +55,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   providers: [EnvServiceProvider],
   bootstrap: [AppComponent]

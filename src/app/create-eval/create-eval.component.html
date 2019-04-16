@@ -25,6 +25,11 @@
       <input matInput placeholder="Devoir" formControlName="homework" id="homework" name="homework" required>
     </mat-form-field>
 
+    <mat-form-field class="obtainableInput">
+      <input matInput placeholder="Score max" formControlName="obtainable" id="obtainable" name="obtainable" required
+        pattern="^[0-9][0-9]?[0-9]?$">
+    </mat-form-field>
+
     <mat-form-field class="studentInput">
       <input matInput placeholder="Nom de l'étudiant" formControlName="student" id="student" name="student" required>
     </mat-form-field>
@@ -34,14 +39,13 @@
         pattern="^[0-9][0-9]?[0-9]?$">
     </mat-form-field>
 
-    <mat-form-field class="obtainableInput">
-      <input matInput placeholder="Score max" formControlName="obtainable" id="obtainable" name="obtainable"
-        required pattern="^[0-9][0-9]?[0-9]?$">
-    </mat-form-field>
+    <button mat-icon-button class="copyEvalBtn" [disabled]="!isEvalCreated" matTooltip="Créer nouvelle evaluation à partir de">
+      <mat-icon class="editIcon" (click)="copyEval(evalId)">file_copy</mat-icon>
+    </button>
 
     <button mat-raised-button class="float-right" type="submit" color="primary"
-      [disabled]="createEvalForm.pristine || createEvalForm.invalid">Valider
+      [disabled]="createEvalForm.pristine || createEvalForm.invalid" matTooltip="Créer evaluation">
+      Valider
     </button>
   </form>
-
 </div>

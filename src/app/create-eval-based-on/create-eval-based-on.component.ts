@@ -8,13 +8,13 @@ import { ScoreValidator} from 'src/app/validators/score-validator';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
-  selector: 'app-student-update-eval',
-  templateUrl: './update-eval.component.html',
-  styleUrls: ['./update-eval.component.css']
+  selector: 'app-create-eval-based-on',
+  templateUrl: './create-eval-based-on.component.html',
+  styleUrls: ['./create-eval-based-on.component.css']
 })
-export class UpdateEvalComponent implements OnInit {
+export class CreateEvalBasedOnComponent implements OnInit {
 
-  updateEvalForm: FormGroup;
+  createEvalForm: FormGroup;
   evalId;
   private evalData;
 
@@ -33,24 +33,24 @@ export class UpdateEvalComponent implements OnInit {
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         response => {
           this.evalData = response;
-          //console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
-          //console.log('[update-eval.components.ts | ngOnInit]:  - evalDagta', this.evalData);
+          //console.log('[create-eval-based.components.ts | ngOnInit]:  - response', response);
+          //console.log('[create-eval-based.components.ts | ngOnInit]:  - evalDagta', this.evalData);
         },
         err => {
           this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
           console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
-          //console.log('[update-eval.components.ts | ngOnInit]: Get eval');
+          //console.log('[create-eval-based.components.ts | ngOnInit]: Get eval');
           this.formUpdating();
         }
       );
     });
-    this.updateEvalForm.markAsPristine();
+    this.createEvalForm.markAsPristine();
   }
 
   initialisationForm() {
-    this.updateEvalForm = this.formBuilder.group({
+    this.createEvalForm = this.formBuilder.group({
       school: [''],
       module: [''],
       promotion: [''],
@@ -64,23 +64,23 @@ export class UpdateEvalComponent implements OnInit {
   }
 
   formUpdating() {
-    this.updateEvalForm = this.formBuilder.group({
+    this.createEvalForm = this.formBuilder.group({
       school: [this.evalData.school, Validators.required],
       module: [this.evalData.module, Validators.required],
       promotion: [this.evalData.promotion, Validators.required],
       category: [this.evalData.category, Validators.required],
       skill: [this.evalData.skill, Validators.required],
       homework: [this.evalData.homework, Validators.required],
-      student: [this.evalData.student.name, Validators.required],
-      score: [this.evalData.score, Validators.required],
+      student: ['', Validators.required],
+      score: ['', Validators.required],
       obtainable: [this.evalData.obtainable, Validators.required]
     }, { validator: ScoreValidator.scoreValidator });
   }
 
   onSubmit() {
-    const formValue = this.updateEvalForm.value;
-    const updatedEval = new Eval(
-      this.evalId,
+    const formValue = this.createEvalForm.value;
+    const newEval = new Eval(
+      '',
       formValue['school'],
       formValue['promotion'],
       formValue['module'],
@@ -91,24 +91,23 @@ export class UpdateEvalComponent implements OnInit {
       formValue['score'],
       formValue['obtainable'],
     );
-    //console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
+    //console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
 
-    this.evalService.updateEval(this.evalId, updatedEval)
+    this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
-        console.log('[update-eval.components.ts | onSubmit - data]: ', data);
+        console.log('[create-eval-based.components.ts | onSubmit - data]: ', data);
         console.log(Object.values(data)[0]);
-        if (Object.values(data)[0] === true) {
+        if (data) {
           this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
-        } else {
-          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
         }
       },
         error => {
-          alert('Une erreur s\' est produite lors de l\' envoie des données.');
+          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
         }
       );
-    this.updateEvalForm.markAsPristine();
+    this.createEvalForm.get('score').setValue('');
+    this.createEvalForm.markAsPristine();
   }
 
   openSnackBar(message, type) {
@@ -117,5 +116,4 @@ export class UpdateEvalComponent implements OnInit {
       panelClass: [type],
     });
   }
-
 }
