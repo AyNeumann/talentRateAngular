@@ -2,6 +2,10 @@
     margin-top: 5vh;
 }
 
+.updateEvalForm {
+    display: block;
+}
+
 .mat-form-field {
     display: block;
     margin: auto;
@@ -10,4 +14,9 @@
 
 .submitBtn {
     align-self: flex-end;
+}
+
+.test {
+    display: block;
+    margin: auto;
 }

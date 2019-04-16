@@ -7,14 +7,31 @@
     <mat-form-field class="searchInput">
       <input matInput placeholder="Valeur" [formControl]="data">
     </mat-form-field>
-    <button mat-raised-button class="submitBtn" color="primary" (click)="searchEval()">Valider</button>
+    <button mat-raised-button class="submitBtn" color="primary" (click)="searchEval()" matTooltip="Valider critères de recherche">
+      Valider
+    </button>
+    <button mat-raised-button class="submitBtn" color="primary" (click)="removeFilters()" matTooltip="Retirer tout les filtres">
+      Retirer filtres
+    </button>
   </form>
 
   <mat-form-field class="tableFilterInput">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <mat-progress-spinner mode="indeterminate" *ngIf="!dataObtained && !dataError" aria-label="Loading icon"></mat-progress-spinner>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataObtained">
+
+    <!--Duplicate-->
+    <ng-container matColumnDef="copy">
+      <th mat-header-cell *matHeaderCellDef> Copy </th>
+      <td mat-cell *matCellDef="let eval">
+        <button mat-icon-button matTooltip="Créer nouvelle evaluation à partir de">
+          <mat-icon class="copyIcon" (click)="copyEval(eval.evalId)">file_copy</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
     <!--School-->
     <ng-container matColumnDef="school">
@@ -74,11 +91,11 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let eval">
-        <button mat-raised-button color="primary">
-          <mat-icon class="actionIcon" (click)="editEval(eval.evalId)">edit</mat-icon>
+        <button mat-icon-button color="primary" matTooltip="Editer evaluation">
+          <mat-icon class="editIcon" (click)="editEval(eval.evalId)">edit</mat-icon>
         </button>
-        <button mat-raised-button color="warn">
-          <mat-icon class="actionIcon" (click)="deleteEval(eval.evalId)">delete</mat-icon>
+        <button mat-icon-button color="warn" matTooltip="Supprimer evaluation">
+          <mat-icon class="deleteIcon" (click)="deleteEval(eval.evalId)">delete</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -87,17 +104,19 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <div class="graphContainer">
-    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="totalScoreGrapData" [gradient]="gradient" [xAxis]="showXAxis"
-      [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+  <mat-progress-spinner mode="indeterminate" *ngIf="!graphOneData && !dataError" aria-label="Loading icon"></mat-progress-spinner>
+  <div class="graphContainer" *ngIf="dataObtained">
+    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="totalScoreGrapData" [gradient]="gradient"
+      [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
     </ngx-charts-bar-vertical-stacked>
   </div>
 
-  <div class="graphContainer">
-    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="scorePerSkillGrapData" [gradient]="gradient" [xAxis]="showXAxis"
-      [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+  <mat-progress-spinner mode="indeterminate" *ngIf="!graphTwoData && !dataError" aria-label="Loading icon"></mat-progress-spinner>
+  <div class="graphContainer" *ngIf="dataObtained">
+    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="scorePerSkillGrapData" [gradient]="gradient"
+      [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
     </ngx-charts-bar-vertical-stacked>
   </div>
 

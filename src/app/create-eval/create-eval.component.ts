@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Eval } from 'src/app/models/eval';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
+import { ScoreValidator} from 'src/app/validators/score-validator';
 
 import { MatSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-create-eval',
@@ -13,8 +16,14 @@ import { MatSnackBar } from '@angular/material';
 export class CreateEvalComponent implements OnInit {
 
   createEvalForm: FormGroup;
+  private isEvalCreated = false;
+  private evalId: String = '';
 
-  constructor(private formBuilder: FormBuilder, private evalService: EvalServiceService, private snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder,
+    private evalService: EvalServiceService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.initialisationForm();
@@ -22,16 +31,16 @@ export class CreateEvalComponent implements OnInit {
 
   initialisationForm() {
     this.createEvalForm = this.formBuilder.group({
-      school: [''],
-      module: [''],
-      promotion: [''],
-      category: [''],
-      skill: [''],
-      homework: [''],
-      student: [''],
-      score: [''],
-      obtainable: ['']
-    });
+      school: ['', Validators.required],
+      module: ['', Validators.required],
+      promotion: ['', Validators.required],
+      category: ['', Validators.required],
+      skill: ['', Validators.required],
+      homework: ['', Validators.required],
+      student: ['', Validators.required],
+      score: ['', Validators.required],
+      obtainable: ['', Validators.required]
+    }, { validator: ScoreValidator.scoreValidator });
   }
 
   onSubmit() {
@@ -53,11 +62,13 @@ export class CreateEvalComponent implements OnInit {
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
-        console.log('[update-eval.components.ts | onSubmit - data]: ', data);
-        console.log(Object.values(data)[0]);
+        console.log('[create-eval.components.ts | onSubmit - data]: ', data);
+        console.log('[create-eval.components.ts | onSubmit - Object.values(data)[0]]: ', Object.values(data)[0]);
         if (data) {
           this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
         }
+        this.evalId = Object.values(data)[0];
+        this.isEvalCreated = true;
       },
         error => {
           this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
@@ -72,5 +83,11 @@ export class CreateEvalComponent implements OnInit {
       duration: 3000,
       panelClass: [type],
     });
+  }
+
+  copyEval() {
+    console.log('Copy Eval');
+    console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
+    this.router.navigate(['/copyeval', this.evalId]);
   }
 }
