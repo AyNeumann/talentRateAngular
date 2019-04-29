@@ -17,6 +17,7 @@ export class UpdateEvalComponent implements OnInit {
   updateEvalForm: FormGroup;
   evalId;
   private evalData;
+  private evalDate;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,7 +34,7 @@ export class UpdateEvalComponent implements OnInit {
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         response => {
           this.evalData = response;
-          //console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
+          console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
           //console.log('[update-eval.components.ts | ngOnInit]:  - evalDagta', this.evalData);
         },
         err => {
@@ -57,6 +58,7 @@ export class UpdateEvalComponent implements OnInit {
       category: [''],
       skill: [''],
       homework: [''],
+      given: [''],
       student: [''],
       score: [''],
       obtainable: ['']
@@ -64,6 +66,7 @@ export class UpdateEvalComponent implements OnInit {
   }
 
   formUpdating() {
+    this.evalDate = new Date(this.evalData.given);
     this.updateEvalForm = this.formBuilder.group({
       school: [this.evalData.school, Validators.required],
       module: [this.evalData.module, Validators.required],
@@ -71,6 +74,7 @@ export class UpdateEvalComponent implements OnInit {
       category: [this.evalData.category, Validators.required],
       skill: [this.evalData.skill, Validators.required],
       homework: [this.evalData.homework, Validators.required],
+      given: [this.evalDate, Validators.required],
       student: [this.evalData.student.name, Validators.required],
       score: [this.evalData.score, Validators.required],
       obtainable: [this.evalData.obtainable, Validators.required]
@@ -90,18 +94,20 @@ export class UpdateEvalComponent implements OnInit {
       formValue['student'],
       formValue['score'],
       formValue['obtainable'],
+      formValue['given'].getTime()
     );
-    //console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
+    // console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
 
     this.evalService.updateEval(this.evalId, updatedEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
-        console.log('[update-eval.components.ts | onSubmit - data]: ', data);
-        console.log(Object.values(data)[0]);
-        if (Object.values(data)[0] === true) {
-          this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
+        //console.log('[update-eval.components.ts | onSubmit - data]: ', data);
+        //console.log('[update-eval.components.ts | onSubmit - data[0]]: ', Object.values(data)[0]);
+        //console.log('[update-eval.components.ts | onSubmit - data[10]]: ', Object.values(data)[10]);
+        if (Object.values(data)[12] === true) {
+          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
         } else {
-          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
+          this.openSnackBar(Object.values(data)[11], 'snackBarError');
         }
       },
         error => {

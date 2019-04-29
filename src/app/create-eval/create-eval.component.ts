@@ -18,6 +18,8 @@ export class CreateEvalComponent implements OnInit {
   createEvalForm: FormGroup;
   private isEvalCreated = false;
   private evalId: String = '';
+  private evalDate = new Date();
+  private evalDateMS = this.evalDate.getTime();
 
   constructor(private formBuilder: FormBuilder,
     private evalService: EvalServiceService,
@@ -56,16 +58,21 @@ export class CreateEvalComponent implements OnInit {
       formValue['student'],
       formValue['score'],
       formValue['obtainable'],
+      this.evalDateMS
     );
     //console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
-
+    console.log('[create-eval.components.ts | onSubmit - this.evalDate]: ', this.evalDate);
+    console.log('[create-eval.components.ts | onSubmit - this.evalDateMS]: ', this.evalDateMS);
+    console.log('[create-eval.components.ts | onSubmit - new Date(this.evalDateMS)]: ', new Date(this.evalDateMS));
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
         console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        console.log('[create-eval.components.ts | onSubmit - Object.values(data)[0]]: ', Object.values(data)[0]);
-        if (data) {
-          this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
+        //console.log('[create-eval.components.ts | onSubmit - Object.values(data)[12]]: ', Object.values(data)[12]);
+        if (Object.values(data)[12] === true) {
+          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
+        } else {
+          this.openSnackBar(Object.values(data)[11], 'snackBarError');
         }
         this.evalId = Object.values(data)[0];
         this.isEvalCreated = true;
@@ -86,8 +93,8 @@ export class CreateEvalComponent implements OnInit {
   }
 
   copyEval() {
-    console.log('Copy Eval');
-    console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
+    // console.log('Copy Eval');
+    // console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
     this.router.navigate(['/copyeval', this.evalId]);
   }
 }
