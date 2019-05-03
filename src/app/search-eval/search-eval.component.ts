@@ -74,6 +74,10 @@ export class SearchEvalComponent implements OnInit {
         this.evalData = response;
         // console.log('[search-eval.components.ts | searchEval]: ', response);
         this.dataSource = new MatTableDataSource(this.evalData);
+      },
+      error => {
+        this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
+        this.dataError = true;
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType1).subscribe(
