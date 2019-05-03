@@ -8,6 +8,12 @@
     width: 40%;
 }
 
-.submitBtn {
-    align-self: flex-end;
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2vh;
+}
+
+.copyEvalBtn {
+    margin-right: 4vw;
 }

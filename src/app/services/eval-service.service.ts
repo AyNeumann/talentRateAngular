@@ -41,7 +41,7 @@ export class EvalServiceService {
     return this.http.delete(`${this.baseUrl}/deleteeval?id=${id}`);
   }
 
-  retrieveGeneralGraphData(graphType){
+  retrieveGeneralGraphData(graphType) {
     return this.http.get(`${this.baseUrl}/getgraphdata?graphType=${graphType}`);
   }
 

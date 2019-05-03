@@ -1,16 +1,16 @@
 <div class="container">
-  <form class="searchEvalForm">
+  <form class="searchEvalForm" [formGroup]="searchEvalForm" #srcEvalForm="ngForm">
     <mat-form-field class="searchInput">
-      <input matInput placeholder="Champs de recherche" [formControl]="field">
+      <input matInput placeholder="Champs de recherche" [formControl]="field" formControlName="field" id="field" name="field">
     </mat-form-field>
 
     <mat-form-field class="searchInput">
-      <input matInput placeholder="Valeur" [formControl]="data">
+      <input matInput placeholder="Valeur" [formControl]="data" formControlName="data" id="data" name="data">
     </mat-form-field>
     <button mat-raised-button class="submitBtn" color="primary" (click)="searchEval()" matTooltip="Valider critères de recherche">
       Valider
     </button>
-    <button mat-raised-button class="submitBtn" color="primary" (click)="removeFilters()" matTooltip="Retirer tout les filtres">
+    <button mat-raised-button class="submitBtn" color="accent" (click)="removeFilters()" matTooltip="Retirer tout les filtres">
       Retirer filtres
     </button>
   </form>

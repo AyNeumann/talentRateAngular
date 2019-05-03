@@ -25,6 +25,12 @@
         <input matInput placeholder="Devoir" formControlName="homework" id="homework" name="homework" required>
       </mat-form-field>
 
+      <mat-form-field class="givenInput">
+        <input matInput [owlDateTime]="dt2" formControlName="given" placeholder="Date Time">
+        <span [owlDateTimeTrigger]="dt2" matSuffixb><mat-icon >calendar_today</mat-icon></span>
+        <owl-date-time #dt2></owl-date-time>
+      </mat-form-field>
+
       <mat-form-field class="obtainableInput">
         <input matInput placeholder="Score max" formControlName="obtainable" id="obtainable" name="obtainable"
           required pattern="^[0-9][0-9]?[0-9]?$">

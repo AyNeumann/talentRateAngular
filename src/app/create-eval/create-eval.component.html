@@ -25,6 +25,12 @@
       <input matInput placeholder="Devoir" formControlName="homework" id="homework" name="homework" required>
     </mat-form-field>
 
+    <mat-form-field class="givenInput">
+      <input matInput [owlDateTime]="dt2" formControlName="given" placeholder="Date Time">
+      <span [owlDateTimeTrigger]="dt2" matSuffix><mat-icon>calendar_today</mat-icon></span>
+      <owl-date-time #dt2></owl-date-time>
+    </mat-form-field>
+
     <mat-form-field class="obtainableInput">
       <input matInput placeholder="Score max" formControlName="obtainable" id="obtainable" name="obtainable" required
         pattern="^[0-9][0-9]?[0-9]?$">
@@ -39,13 +45,25 @@
         pattern="^[0-9][0-9]?[0-9]?$">
     </mat-form-field>
 
-    <button mat-icon-button class="copyEvalBtn" [disabled]="!isEvalCreated" matTooltip="Créer nouvelle evaluation à partir de">
-      <mat-icon class="editIcon" (click)="copyEval(evalId)">file_copy</mat-icon>
-    </button>
+    <div class="btnContainer">
+      <button mat-raised-button class="copyEvalBtn" color="accent"
+        [disabled]="createEvalForm.pristine || createEvalForm.invalid"
+        matTooltip="Créer nouvelle evaluation à partir de">
+        Valider et copier
+      </button>
 
-    <button mat-raised-button class="float-right" type="submit" color="primary"
-      [disabled]="createEvalForm.pristine || createEvalForm.invalid" matTooltip="Créer evaluation">
-      Valider
-    </button>
+      <button mat-raised-button class="submitBtn" type="submit" color="primary"
+        [disabled]="createEvalForm.pristine || createEvalForm.invalid" 
+        matTooltip="Créer evaluation">
+        Valider
+      </button>
+    </div>
   </form>
 </div>
+
+<!--[disabled]="createEvalForm.pristine || createEvalForm.invalid"-->
+<!--<mat-form-field class="givenInput">
+      <input matInput [owlDateTime]="dt2" formControlName="given" placeholder="Date Time">
+      <span [owlDateTimeTrigger]="dt2"><mat-icon matSuffix>calendar_today</mat-icon></span>
+      <owl-date-time #dt2></owl-date-time>
+</mat-form-field>-->

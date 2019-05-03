@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { Eval } from 'src/app/models/eval';
 import { MatTableDataSource } from '@angular/material';
@@ -13,6 +14,8 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./search-eval.component.css']
 })
 export class SearchEvalComponent implements OnInit {
+
+  searchEvalForm: FormGroup;
 
   private dataObtained = false;
   private dataError = false;
@@ -54,10 +57,15 @@ export class SearchEvalComponent implements OnInit {
   constructor(private evalService: EvalServiceService,
     private route: ActivatedRoute,
     private router: Router,
+    private formBuilder: FormBuilder,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getAllDatas();
+    this.searchEvalForm = this.formBuilder.group({
+      field: [''],
+      data: [''],
+    });
   }
 
   searchEval() {
@@ -66,6 +74,10 @@ export class SearchEvalComponent implements OnInit {
         this.evalData = response;
         // console.log('[search-eval.components.ts | searchEval]: ', response);
         this.dataSource = new MatTableDataSource(this.evalData);
+      },
+      error => {
+        this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
+        this.dataError = true;
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType1).subscribe(
@@ -84,6 +96,8 @@ export class SearchEvalComponent implements OnInit {
 
   removeFilters() {
     this.getAllDatas();
+    this.searchEvalForm.get('field').setValue('');
+    this.searchEvalForm.get('data').setValue('');
   }
 
   getAllDatas() {

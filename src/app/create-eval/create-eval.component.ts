@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Eval } from 'src/app/models/eval';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { ScoreValidator} from 'src/app/validators/score-validator';
@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material';
 export class CreateEvalComponent implements OnInit {
 
   createEvalForm: FormGroup;
-  private isEvalCreated = false;
+  copyingEval = false;
   private evalId: String = '';
 
   constructor(private formBuilder: FormBuilder,
@@ -37,9 +37,10 @@ export class CreateEvalComponent implements OnInit {
       category: ['', Validators.required],
       skill: ['', Validators.required],
       homework: ['', Validators.required],
+      given: [new Date(), Validators.required],
       student: ['', Validators.required],
       score: ['', Validators.required],
-      obtainable: ['', Validators.required]
+      obtainable: ['', Validators.required],
     }, { validator: ScoreValidator.scoreValidator });
   }
 
@@ -56,19 +57,23 @@ export class CreateEvalComponent implements OnInit {
       formValue['student'],
       formValue['score'],
       formValue['obtainable'],
+      formValue['given'].getTime(),
     );
-    //console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
-
+    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
         console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        console.log('[create-eval.components.ts | onSubmit - Object.values(data)[0]]: ', Object.values(data)[0]);
-        if (data) {
-          this.openSnackBar('Données sauvegardées!', 'snackBarSuccess');
+        //console.log('[create-eval.components.ts | onSubmit - Object.values(data)[12]]: ', Object.values(data)[12]);
+        if (Object.values(data)[12] === true) {
+          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
+          if (this.copyingEval === true) {
+            this.router.navigate(['/copyeval', this.evalId]);
+          }
+        } else {
+          this.openSnackBar(Object.values(data)[11], 'snackBarError');
         }
         this.evalId = Object.values(data)[0];
-        this.isEvalCreated = true;
       },
         error => {
           this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
@@ -86,8 +91,9 @@ export class CreateEvalComponent implements OnInit {
   }
 
   copyEval() {
-    console.log('Copy Eval');
-    console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
-    this.router.navigate(['/copyeval', this.evalId]);
+    // console.log('Copy Eval');
+    // console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
+    this.copyingEval = true;
+    this.onSubmit();
   }
 }
