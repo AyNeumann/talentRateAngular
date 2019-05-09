@@ -96,7 +96,7 @@ export class UpdateEvalComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime()
     );
-    // console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
+    console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
 
     this.evalService.updateEval(this.evalId, updatedEval)
       .subscribe(data => {

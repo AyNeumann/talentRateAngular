@@ -59,21 +59,21 @@ export class CreateEvalComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime(),
     );
-    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
+    // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
       .subscribe(data => {
         this.evalService.evalToSend = data;
-        console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        //console.log('[create-eval.components.ts | onSubmit - Object.values(data)[12]]: ', Object.values(data)[12]);
+        // console.log('[create-eval.components.ts | onSubmit - data]: ', data);
+        // console.log('[create-eval.components.ts | onSubmit - Object.values(data)[12]]: ', Object.values(data)[12]);
         if (Object.values(data)[12] === true) {
           this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
-          if (this.copyingEval === true) {
-            this.router.navigate(['/copyeval', this.evalId]);
-          }
         } else {
           this.openSnackBar(Object.values(data)[11], 'snackBarError');
         }
         this.evalId = Object.values(data)[0];
+        if (Object.values(data)[12] === true && this.copyingEval === true) {
+          this.router.navigate(['/copyeval', this.evalId]);
+        }
       },
         error => {
           this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
@@ -91,9 +91,6 @@ export class CreateEvalComponent implements OnInit {
   }
 
   copyEval() {
-    // console.log('Copy Eval');
-    // console.log('[create-eval.components.ts | copyEval - evalId]', this.evalId);
     this.copyingEval = true;
-    this.onSubmit();
   }
 }

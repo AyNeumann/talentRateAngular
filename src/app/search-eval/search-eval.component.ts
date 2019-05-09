@@ -17,11 +17,11 @@ export class SearchEvalComponent implements OnInit {
 
   searchEvalForm: FormGroup;
 
-  private dataObtained = false;
-  private dataError = false;
-  private graphOneData = false;
-  private graphTwoData = false;
-  private evalData: Eval[] = [];
+  dataObtained = false;
+  dataError = false;
+  graphOneData = false;
+  graphTwoData = false;
+  evalData: Eval[] = [];
   displayedColumns: string[] = ['copy', 'school', 'promotion', 'module', 'category', 'skill', 'homework',
   'student', 'score', 'obtainable', 'actions'];
   dataSource = new MatTableDataSource();
@@ -103,18 +103,19 @@ export class SearchEvalComponent implements OnInit {
   getAllDatas() {
     this.evalService.retrieveAllEvals().subscribe(
       (response: any[]) => {
+        // console.log('[search-eval.components.ts | getAllDatas | retrieveAllEvals]: - response: ', response);
         this.evalData = response;
         this.dataSource = new MatTableDataSource(this.evalData);
         this.dataObtained = true;
       },
       error => {
-        this.openSnackBar('Une erreur s\' est produite lors de la récupération envoie des données.', 'snackBarError');
+        this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
         this.dataError = true;
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
       (response: any[]) => {
-        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General graph ', response);
+        //console.log('[search-eval.components.ts | getAllDatas | retrieveGeneralGraphData]: - General graph ', response);
         this.totalScoreGrapData = response;
         this.graphOneData = true;
       }
@@ -138,11 +139,19 @@ export class SearchEvalComponent implements OnInit {
   }
 
   deleteEval(evalId) {
-    this.evalService.deleteEval(evalId).subscribe();
-  }
-
-  onSelect(event) {
-    // console.log(event);
+    this.evalService.deleteEval(evalId).subscribe(
+      (response: any[]) => {
+        // console.log('[search-eval.components.ts | deleteEval | deleteEval]: - response ', response);
+        if (Object.values(response)[2] === evalId) {
+          // console.log('[search-eval.components.ts | deleteEval | deleteEval]: If is fired, getAllDatas called');
+          this.getAllDatas();
+        }
+      },
+      error => {
+        this.openSnackBar('Une erreur s\' est produite lors de la suppression des données.', 'snackBarError');
+        this.dataError = true;
+      }
+    );
   }
 
   openSnackBar(message, type) {

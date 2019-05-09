@@ -46,7 +46,7 @@
     </mat-form-field>
 
     <div class="btnContainer">
-      <button mat-raised-button class="copyEvalBtn" color="accent"
+      <button mat-raised-button class="copyEvalBtn" color="accent" (click)="copyEval()"
         [disabled]="createEvalForm.pristine || createEvalForm.invalid"
         matTooltip="Créer nouvelle evaluation à partir de">
         Valider et copier
@@ -60,10 +60,3 @@
     </div>
   </form>
 </div>
-
-<!--[disabled]="createEvalForm.pristine || createEvalForm.invalid"-->
-<!--<mat-form-field class="givenInput">
-      <input matInput [owlDateTime]="dt2" formControlName="given" placeholder="Date Time">
-      <span [owlDateTimeTrigger]="dt2"><mat-icon matSuffix>calendar_today</mat-icon></span>
-      <owl-date-time #dt2></owl-date-time>
-</mat-form-field>-->

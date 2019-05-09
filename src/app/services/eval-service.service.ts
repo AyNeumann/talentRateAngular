@@ -36,9 +36,8 @@ export class EvalServiceService {
     return this.http.post(`${this.baseUrl}/${id}`, evalToSend);
   }
 
-  // TODO: Create back end.
   deleteEval(id) {
-    return this.http.delete(`${this.baseUrl}/deleteeval?id=${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
   retrieveGeneralGraphData(graphType) {
