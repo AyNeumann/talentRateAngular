@@ -34,12 +34,12 @@ export class CreateEvalBasedOnComponent implements OnInit {
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         response => {
           this.evalData = response;
-          //console.log('[create-eval-based.components.ts | ngOnInit]:  - response', response);
-          //console.log('[create-eval-based.components.ts | ngOnInit]:  - evalDagta', this.evalData);
+          // console.log('[create-eval-based.components.ts | ngOnInit]:  - response', response);
+          // console.log('[create-eval-based.components.ts | ngOnInit]:  - evalData', this.evalData);
         },
         err => {
           this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
-          console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
+          // console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
           //console.log('[create-eval-based.components.ts | ngOnInit]: Get eval');
@@ -96,7 +96,7 @@ export class CreateEvalBasedOnComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime()
     );
-    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
+    // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
 
     this.evalService.createEval(newEval)
       .subscribe(data => {
