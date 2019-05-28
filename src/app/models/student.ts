@@ -4,3 +4,7 @@ export class Student {
     ) { }
 
 }
+
+/* export interface Student {
+    name: string;
+} */

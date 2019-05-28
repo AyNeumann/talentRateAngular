@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeComponent } from './search-eval.component';
+import { SearchEvalComponent } from './search-eval.component';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('SearchEvalComponent', () => {
+  let component: SearchEvalComponent;
+  let fixture: ComponentFixture<SearchEvalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [ SearchEvalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(SearchEvalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

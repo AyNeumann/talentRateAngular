@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
-import { Eval } from 'src/app/models/eval';
+import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
@@ -61,21 +61,20 @@ export class CreateEvalComponent implements OnInit {
     );
     // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
-      .subscribe(data => {
-        this.evalService.evalToSend = data;
-        // console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        // console.log('[create-eval.components.ts | onSubmit - Object.values(data)[12]]: ', Object.values(data)[12]);
-        if (Object.values(data)[12] === true) {
-          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
+      .subscribe(
+        (data: ReturnedEval) => { this.evalService.evalToSend = data;
+        console.log('[create-eval.components.ts | onSubmit - data]: ', data);
+        if (data.isDone === true) {
+          this.openSnackBar(data.message, 'snackBarSuccess');
         } else {
-          this.openSnackBar(Object.values(data)[11], 'snackBarError');
+          this.openSnackBar(data.message, 'snackBarError');
         }
-        this.evalId = Object.values(data)[0];
-        if (Object.values(data)[12] === true && this.copyingEval === true) {
+        this.evalId = data.evalId;
+        if (data.isDone === true && this.copyingEval === true) {
           this.router.navigate(['/copyeval', this.evalId]);
         }
       },
-        error => {
+        (error: any) => {
           this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
         }
       );

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
-import { Eval } from 'src/app/models/eval';
+import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
 import { MatSnackBar } from '@angular/material';
@@ -32,7 +32,7 @@ export class CreateEvalBasedOnComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.evalId = params['evalId'];
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
-        response => {
+        (response: Eval) => {
           this.evalData = response;
           // console.log('[create-eval-based.components.ts | ngOnInit]:  - response', response);
           // console.log('[create-eval-based.components.ts | ngOnInit]:  - evalData', this.evalData);
@@ -99,17 +99,17 @@ export class CreateEvalBasedOnComponent implements OnInit {
     // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
 
     this.evalService.createEval(newEval)
-      .subscribe(data => {
-        this.evalService.evalToSend = data;
+      .subscribe(
+        (data: ReturnedEval) => { this.evalService.evalToSend = data;
         //console.log('[create-eval-based.components.ts | onSubmit - data]: ', data);
         //console.log(Object.values(data)[0]);
-        if (Object.values(data)[12] === true) {
-          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
+        if (data.isDone === true) {
+          this.openSnackBar(data.message, 'snackBarSuccess');
         } else {
-          this.openSnackBar(Object.values(data)[11], 'snackBarError');
+          this.openSnackBar(data.message, 'snackBarError');
         }
       },
-        error => {
+        (error: any) => {
           this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
         }
       );

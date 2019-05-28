@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { EnvServiceProvider } from './env.service.provider';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,7 @@ import { CreateEvalBasedOnComponent } from './create-eval-based-on/create-eval-b
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderServiceService } from './services/loader-service.service';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
+import { CacheInterceptor } from './interceptors/cache.interceptor';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -37,6 +38,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 /*Owl Date Time Picker*/
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
+/*Keycloak*/
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+import { initializer } from './utils/app-init';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +56,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
+    KeycloakAngularModule,
     NgxChartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -70,7 +76,15 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
   ],
-  providers: [EnvServiceProvider, LoaderServiceService, { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }],
+  providers: [EnvServiceProvider, LoaderServiceService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true},
+    /*{
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }*/],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

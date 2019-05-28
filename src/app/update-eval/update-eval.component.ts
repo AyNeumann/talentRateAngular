@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
-import { Eval } from 'src/app/models/eval';
+import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
 import { MatSnackBar } from '@angular/material';
+import { EvalTrackerError } from '../models/evalTrackerError';
 
 @Component({
   selector: 'app-student-update-eval',
@@ -29,24 +30,33 @@ export class UpdateEvalComponent implements OnInit {
 
   ngOnInit() {
     this.initialisationForm();
-    this.route.params.subscribe((params: Params) => {
+    const resolvedEval: Eval | EvalTrackerError = this.route.snapshot.data['resolvedEval'];
+    console.log('[update-eval.component.ts | ngOnInit] - DATA: ',);
+    if (resolvedEval instanceof EvalTrackerError) {
+      console.log(resolvedEval.messageToUser);
+    } else {
+      this.evalData = resolvedEval;
+      this.formUpdating();
+      console.log('[update-eval.component.ts | ngOnInit] - resolvedEval: ', resolvedEval);
+      this.evalId = this.route.snapshot.paramMap.get('evalId');
+    }
+    /* this.route.params.subscribe((params: Params) => {
       this.evalId = params['evalId'];
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         response => {
           this.evalData = response;
           console.log('[update-eval.components.ts | ngOnInit]:  - response', response);
-          //console.log('[update-eval.components.ts | ngOnInit]:  - evalDagta', this.evalData);
         },
         err => {
           this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
           console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
-          //console.log('[update-eval.components.ts | ngOnInit]: Get eval');
           this.formUpdating();
         }
       );
-    });
+    }); */
+
     this.updateEvalForm.markAsPristine();
   }
 
@@ -99,15 +109,12 @@ export class UpdateEvalComponent implements OnInit {
     console.log('[update-eval.components.ts | onSubmit - updatedEval]: ', updatedEval);
 
     this.evalService.updateEval(this.evalId, updatedEval)
-      .subscribe(data => {
+      .subscribe((data: ReturnedEval) => {
         this.evalService.evalToSend = data;
-        //console.log('[update-eval.components.ts | onSubmit - data]: ', data);
-        //console.log('[update-eval.components.ts | onSubmit - data[0]]: ', Object.values(data)[0]);
-        //console.log('[update-eval.components.ts | onSubmit - data[10]]: ', Object.values(data)[10]);
-        if (Object.values(data)[12] === true) {
-          this.openSnackBar(Object.values(data)[11], 'snackBarSuccess');
+        if (data.isDone === true) {
+          this.openSnackBar(data.message, 'snackBarSuccess');
         } else {
-          this.openSnackBar(Object.values(data)[11], 'snackBarError');
+          this.openSnackBar(data.message, 'snackBarError');
         }
       },
         error => {
