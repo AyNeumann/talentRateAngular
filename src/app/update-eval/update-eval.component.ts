@@ -31,9 +31,12 @@ export class UpdateEvalComponent implements OnInit {
   ngOnInit() {
     this.initialisationForm();
     const resolvedEval: Eval | EvalTrackerError = this.route.snapshot.data['resolvedEval'];
-    console.log('[update-eval.component.ts | ngOnInit] - DATA: ',);
     if (resolvedEval instanceof EvalTrackerError) {
-      console.log(resolvedEval.messageToUser);
+      console.log(
+        'Erreur lors de la récupération de l\'eval: \n',
+        'Http error number: ', resolvedEval.errorNumber, '\n',
+        'Htpp error message:', resolvedEval.message
+      );
     } else {
       this.evalData = resolvedEval;
       this.formUpdating();

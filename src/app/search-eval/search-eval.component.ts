@@ -3,12 +3,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { Eval } from 'src/app/models/eval';
 import { BdInfos } from 'src/app/models/dbInfos';
+import { MutliStackedGraphData } from '../models/graphData';
 import { EvalTrackerError } from '../models/evalTrackerError';
 import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material';
+
 
 
 @Component({
@@ -83,12 +85,12 @@ export class SearchEvalComponent implements OnInit {
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType1).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.totalScoreGrapData = response;
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType2).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.scorePerSkillGrapData = response;
       }
     );
@@ -110,16 +112,22 @@ export class SearchEvalComponent implements OnInit {
       (err: EvalTrackerError) => {
         this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
+        console.log(
+          'Erreur lors de la récupération des evals: \n',
+          'Http error number: ', err.errorNumber, '\n',
+          'Htpp error message:', err.message
+        );
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.totalScoreGrapData = response;
         this.graphOneData = true;
+
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.scorePerSkillGrapData = response;
         this.graphTwoData = true;
       }

@@ -6,6 +6,7 @@ import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { BdInfos } from 'src/app/models/dbInfos';
 import { EnvService } from '../env.service';
 import { EvalTrackerError } from '../models/evalTrackerError';
+import { MutliStackedGraphData } from '../models/graphData';
 
 @Injectable({
   providedIn: 'root'
@@ -37,15 +38,18 @@ export class EvalServiceService {
     );
   }
 
-  retrieveEvalbyId(id): Observable<Eval> {
-    return this.http.get<Eval>(`${this.baseUrl}/getbyid?id=${id}`);
+  retrieveEvalbyId(id: String): Observable<Eval | EvalTrackerError> {
+    return this.http.get<Eval>(`${this.baseUrl}/getbyid?id=${id}`)
+    .pipe(
+      catchError(err => this.handleHttpError(err))
+    );
   }
 
-  updateEval(id, evalToSend: Eval): Observable<Eval> {
+  updateEval(id: String, evalToSend: Eval): Observable<Eval> {
     return this.http.post<Eval>(`${this.baseUrl}/${id}`, evalToSend );
   }
 
-  deleteEval(id): Observable<BdInfos> {
+  deleteEval(id: String): Observable<BdInfos> {
     return this.http.delete<BdInfos>(`${this.baseUrl}/${id}`)
       .pipe(
         map(i => <BdInfos>{
@@ -55,12 +59,12 @@ export class EvalServiceService {
       );
   }
 
-  retrieveGeneralGraphData(graphType) {
-    return this.http.get(`${this.baseUrl}/getgraphdata?graphType=${graphType}`);
+  retrieveGeneralGraphData(graphType: String): Observable<MutliStackedGraphData[]> {
+    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?graphType=${graphType}`);
   }
 
-  retrieveFilteredGraphData(field, data, graphType) {
-    return this.http.get(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
+  retrieveFilteredGraphData(field: String, data: String, graphType: String): Observable<MutliStackedGraphData[]> {
+    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
   }
 
   private handleHttpError(error: HttpErrorResponse): Observable<EvalTrackerError> {

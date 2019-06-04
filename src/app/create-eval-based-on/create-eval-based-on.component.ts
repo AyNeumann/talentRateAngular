@@ -38,11 +38,16 @@ export class CreateEvalBasedOnComponent implements OnInit {
           // console.log('[create-eval-based.components.ts | ngOnInit]:  - evalData', this.evalData);
         },
         err => {
-          this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
+          this.openSnackBar(err.messageToUser, 'snackBarError');
+          console.log(
+            'Erreur lors de la récupération des evals: \n',
+            'Http error number: ', err.errorNumber, '\n',
+            'Htpp error message:', err.message
+          );
           // console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
-          //console.log('[create-eval-based.components.ts | ngOnInit]: Get eval');
+          // console.log('[create-eval-based.components.ts | ngOnInit]: Get eval');
           this.formUpdating();
         }
       );

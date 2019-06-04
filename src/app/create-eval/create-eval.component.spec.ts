@@ -4,8 +4,13 @@ import { CreateEvalComponent } from './create-eval.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { LoaderComponent } from 'src/app/loader/loader.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 describe('CreateEvalComponent', () => {
@@ -18,11 +23,17 @@ describe('CreateEvalComponent', () => {
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
-        LoaderComponent
+        MatSnackBarModule,
+        FormsModule,
+        ReactiveFormsModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
+        HttpClientTestingModule,
+        RouterModule.forRoot([])
       ],
-      declarations: [ CreateEvalComponent ],
+      declarations: [ CreateEvalComponent, LoaderComponent ],
       schemas: [
-        NO_ERRORS_SCHEMA
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     })
     .compileComponents();
