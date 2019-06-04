@@ -87,7 +87,7 @@ export class EvalServiceService {
     } else if (flag === 'update') {
       action = ' mise à jour ';
     } else if (flag === 'delete') {
-      dataError.messageToUser = ' suppression ';
+      action = ' suppression ';
     }
     dataError.messageToUser = `Une erreur s\' est produite lors de la ${action} des données.`;
     console.log(
