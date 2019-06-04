@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Eval, ReturnedEval } from 'src/app/models/eval';
+import { EvalTrackerError } from '../models/evalTrackerError';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
 import { MatSnackBar } from '@angular/material';
+
 
 
 @Component({
@@ -74,8 +76,8 @@ export class CreateEvalComponent implements OnInit {
           this.router.navigate(['/copyeval', this.evalId]);
         }
       },
-        (error: any) => {
-          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
+        (err: EvalTrackerError) => {
+          this.openSnackBar(err.messageToUser, 'snackBarError');
         }
       );
     this.createEvalForm.get('score').setValue('');

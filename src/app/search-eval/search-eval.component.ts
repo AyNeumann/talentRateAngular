@@ -112,18 +112,12 @@ export class SearchEvalComponent implements OnInit {
       (err: EvalTrackerError) => {
         this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
-        console.log(
-          'Erreur lors de la récupération des evals: \n',
-          'Http error number: ', err.errorNumber, '\n',
-          'Htpp error message:', err.message
-        );
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
       (response: MutliStackedGraphData[]) => {
         this.totalScoreGrapData = response;
         this.graphOneData = true;
-
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
@@ -149,8 +143,8 @@ export class SearchEvalComponent implements OnInit {
           this.getAllDatas();
         }
       },
-      (error: any) => {
-        this.openSnackBar('Une erreur s\' est produite lors de la suppression des données.', 'snackBarError');
+      (err: EvalTrackerError) => {
+        this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
       },
       () => {

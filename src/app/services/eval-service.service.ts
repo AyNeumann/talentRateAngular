@@ -20,42 +20,49 @@ export class EvalServiceService {
 
   constructor(private http: HttpClient, private env: EnvService) { }
 
-  createEval(evalToSend: Eval): Observable<ReturnedEval> {
-    return this.http.post<ReturnedEval>(`${this.baseUrl}/`, evalToSend );
+  createEval(evalToSend: Eval): Observable<ReturnedEval | EvalTrackerError> {
+    return this.http.post<ReturnedEval>(`${this.baseUrl}/`, evalToSend )
+      .pipe(
+        catchError(err => this.handleHttpError(err, 'create'))
+      );
   }
 
   retrieveAllEvals(): Observable<Eval[] | EvalTrackerError> {
     return this.http.get<Eval[]>(`${this.baseUrl}/`)
       .pipe(
-        catchError(err => this.handleHttpError(err))
+        catchError(err => this.handleHttpError(err, 'retrieve'))
       );
   }
 
   searchEval(field, data): Observable<Eval[] | EvalTrackerError> {
     return this.http.get<Eval[]>(`${this.baseUrl}/?field=${field}&data=${data}`)
     .pipe(
-      catchError(err => this.handleHttpError(err))
+      catchError(err => this.handleHttpError(err, 'retrieve'))
     );
   }
 
   retrieveEvalbyId(id: String): Observable<Eval | EvalTrackerError> {
     return this.http.get<Eval>(`${this.baseUrl}/getbyid?id=${id}`)
     .pipe(
-      catchError(err => this.handleHttpError(err))
+      catchError(err => this.handleHttpError(err, 'retrieve'))
     );
   }
 
-  updateEval(id: String, evalToSend: Eval): Observable<Eval> {
-    return this.http.post<Eval>(`${this.baseUrl}/${id}`, evalToSend );
+  updateEval(id: String, evalToSend: Eval): Observable<Eval | EvalTrackerError> {
+    return this.http.post<Eval>(`${this.baseUrl}/${id}`, evalToSend )
+    .pipe(
+      catchError(err => this.handleHttpError(err, 'update'))
+    );
   }
 
-  deleteEval(id: String): Observable<BdInfos> {
+  deleteEval(id: String): Observable<BdInfos | EvalTrackerError> {
     return this.http.delete<BdInfos>(`${this.baseUrl}/${id}`)
       .pipe(
         map(i => <BdInfos>{
           id: i.id,
           result: i.result
-        })
+        }),
+        catchError(err => this.handleHttpError(err, 'delete'))
       );
   }
 
@@ -67,11 +74,27 @@ export class EvalServiceService {
     return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
   }
 
-  private handleHttpError(error: HttpErrorResponse): Observable<EvalTrackerError> {
+  // retrieveAllEvals + searchEval + retrieveEvalbyId
+  private handleHttpError(error: HttpErrorResponse, flag: String): Observable<EvalTrackerError> {
     const dataError = new EvalTrackerError();
+    let action: String;
     dataError.errorNumber = error.status;
     dataError.message = error.statusText;
-    dataError.messageToUser = 'Une erreur s\' est produite lors de la récupération des données.';
+    if (flag === 'create') {
+      action = ' création ';
+    } else if (flag === 'retrieve') {
+      action = ' récupération ';
+    } else if (flag === 'update') {
+      action = ' mise à jour ';
+    } else if (flag === 'delete') {
+      dataError.messageToUser = ' suppression ';
+    }
+    dataError.messageToUser = `Une erreur s\' est produite lors de la ${action} des données.`;
+    console.log(
+      `Erreur lors de la ${action} des evals: \n`,
+      'Http error number: ', dataError.errorNumber, '\n',
+      'Htpp error message:', dataError.message
+    );
     return throwError(dataError);
   }
 

@@ -32,11 +32,7 @@ export class UpdateEvalComponent implements OnInit {
     this.initialisationForm();
     const resolvedEval: Eval | EvalTrackerError = this.route.snapshot.data['resolvedEval'];
     if (resolvedEval instanceof EvalTrackerError) {
-      console.log(
-        'Erreur lors de la récupération de l\'eval: \n',
-        'Http error number: ', resolvedEval.errorNumber, '\n',
-        'Htpp error message:', resolvedEval.message
-      );
+      this.openSnackBar(resolvedEval.messageToUser, 'snackBarError');
     } else {
       this.evalData = resolvedEval;
       this.formUpdating();
@@ -120,8 +116,8 @@ export class UpdateEvalComponent implements OnInit {
           this.openSnackBar(data.message, 'snackBarError');
         }
       },
-        error => {
-          alert('Une erreur s\' est produite lors de l\' envoie des données.');
+        (err: EvalTrackerError) => {
+          this.openSnackBar(err.messageToUser, 'snackBarError');
         }
       );
     this.updateEvalForm.markAsPristine();

@@ -6,6 +6,7 @@ import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
 import { MatSnackBar } from '@angular/material';
+import { EvalTrackerError } from '../models/evalTrackerError';
 
 @Component({
   selector: 'app-create-eval-based-on',
@@ -39,11 +40,6 @@ export class CreateEvalBasedOnComponent implements OnInit {
         },
         err => {
           this.openSnackBar(err.messageToUser, 'snackBarError');
-          console.log(
-            'Erreur lors de la récupération des evals: \n',
-            'Http error number: ', err.errorNumber, '\n',
-            'Htpp error message:', err.message
-          );
           // console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
@@ -106,16 +102,14 @@ export class CreateEvalBasedOnComponent implements OnInit {
     this.evalService.createEval(newEval)
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;
-        //console.log('[create-eval-based.components.ts | onSubmit - data]: ', data);
-        //console.log(Object.values(data)[0]);
         if (data.isDone === true) {
           this.openSnackBar(data.message, 'snackBarSuccess');
         } else {
           this.openSnackBar(data.message, 'snackBarError');
         }
       },
-        (error: any) => {
-          this.openSnackBar('Une erreur s\' est produite lors de l\' envoie des données.', 'snackBarError');
+        (err: EvalTrackerError) => {
+          this.openSnackBar(err.messageToUser, 'snackBarError');
         }
       );
     this.createEvalForm.get('score').setValue('');
