@@ -36,16 +36,16 @@ export class EvalServiceService {
 
   searchEval(field, data): Observable<Eval[] | EvalTrackerError> {
     return this.http.get<Eval[]>(`${this.baseUrl}/?field=${field}&data=${data}`)
-    .pipe(
-      catchError(err => this.handleHttpError(err, 'retrieve'))
-    );
+      .pipe(
+        catchError(err => this.handleHttpError(err, 'retrieve'))
+      );
   }
 
   retrieveEvalbyId(id: String): Observable<Eval | EvalTrackerError> {
     return this.http.get<Eval>(`${this.baseUrl}/getbyid?id=${id}`)
-    .pipe(
-      catchError(err => this.handleHttpError(err, 'retrieve'))
-    );
+      .pipe(
+        catchError(err => this.handleHttpError(err, 'retrieve'))
+      );
   }
 
   updateEval(id: String, evalToSend: Eval): Observable<Eval | EvalTrackerError> {
@@ -74,7 +74,6 @@ export class EvalServiceService {
     return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
   }
 
-  // retrieveAllEvals + searchEval + retrieveEvalbyId
   private handleHttpError(error: HttpErrorResponse, flag: String): Observable<EvalTrackerError> {
     const dataError = new EvalTrackerError();
     let action: String;
