@@ -2,11 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { Eval } from 'src/app/models/eval';
+import { BdInfos } from 'src/app/models/dbInfos';
+import { MutliStackedGraphData } from '../models/graphData';
+import { EvalTrackerError } from '../models/evalTrackerError';
 import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material';
+
+
 
 @Component({
   selector: 'app-search-eval',
@@ -36,7 +41,7 @@ export class SearchEvalComponent implements OnInit {
   graph1;
   graph2;
 
-  // options
+  // garphs options
   showXAxis = true;
   showYAxis = true;
   gradient = false;
@@ -70,26 +75,23 @@ export class SearchEvalComponent implements OnInit {
 
   searchEval() {
     this.evalService.searchEval(this.field.value, this.data.value).subscribe(
-      (response: any[]) => {
+      (response: Eval[]) => {
         this.evalData = response;
-        // console.log('[search-eval.components.ts | searchEval]: ', response);
         this.dataSource = new MatTableDataSource(this.evalData);
       },
-      error => {
-        this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
+      (err: EvalTrackerError) => {
+        this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType1).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.totalScoreGrapData = response;
-        // console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - General graph w/filter ', response);
       }
     );
     this.evalService.retrieveFilteredGraphData(this.field.value, this.data.value, this.graphType2).subscribe(
-      (response: any[]) => {
+      (response: MutliStackedGraphData[]) => {
         this.scorePerSkillGrapData = response;
-        // console.log('[search-eval.components.ts | searchEval | retrieveGeneralGraphData]: - Skill graph w/filter', response);
       }
     );
   }
@@ -102,27 +104,24 @@ export class SearchEvalComponent implements OnInit {
 
   getAllDatas() {
     this.evalService.retrieveAllEvals().subscribe(
-      (response: any[]) => {
-        // console.log('[search-eval.components.ts | getAllDatas | retrieveAllEvals]: - response: ', response);
+      (response: Eval[]) => {
         this.evalData = response;
         this.dataSource = new MatTableDataSource(this.evalData);
         this.dataObtained = true;
       },
-      error => {
-        this.openSnackBar('Une erreur s\' est produite lors de la récupération des données.', 'snackBarError');
+      (err: EvalTrackerError) => {
+        this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType1).subscribe(
-      (response: any[]) => {
-        //console.log('[search-eval.components.ts | getAllDatas | retrieveGeneralGraphData]: - General graph ', response);
+      (response: MutliStackedGraphData[]) => {
         this.totalScoreGrapData = response;
         this.graphOneData = true;
       }
     );
     this.evalService.retrieveGeneralGraphData(this.graphType2).subscribe(
-      (response: any[]) => {
-        //console.log('[search-eval.components.ts | ngOnInit | retrieveGeneralGraphData]: - General Skill graph ', response);
+      (response: MutliStackedGraphData[]) => {
         this.scorePerSkillGrapData = response;
         this.graphTwoData = true;
       }
@@ -134,22 +133,22 @@ export class SearchEvalComponent implements OnInit {
   }
 
   editEval(evalId) {
-    // console.log('[search-eval.components.ts | editEval]: - evalId ', evalId);
     this.router.navigate(['/updateeval', evalId]);
   }
 
   deleteEval(evalId) {
     this.evalService.deleteEval(evalId).subscribe(
-      (response: any[]) => {
-        // console.log('[search-eval.components.ts | deleteEval | deleteEval]: - response ', response);
-        if (Object.values(response)[2] === evalId) {
-          // console.log('[search-eval.components.ts | deleteEval | deleteEval]: If is fired, getAllDatas called');
+      (response: BdInfos) => {
+        if (response.result === 'DELETED') {
           this.getAllDatas();
         }
       },
-      error => {
-        this.openSnackBar('Une erreur s\' est produite lors de la suppression des données.', 'snackBarError');
+      (err: EvalTrackerError) => {
+        this.openSnackBar(err.messageToUser, 'snackBarError');
         this.dataError = true;
+      },
+      () => {
+        this.openSnackBar('Eval supprimée', 'snackBarSuccess');
       }
     );
   }
