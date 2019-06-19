@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
+import { SnackBarServiceService } from '../common/snack-bar-service.service';
 import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
-import { MatSnackBar } from '@angular/material';
 import { EvalTrackerError } from '../models/evalTrackerError';
 
 @Component({
@@ -25,7 +25,7 @@ export class CreateEvalBasedOnComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private evalService: EvalServiceService,
-    private snackBar: MatSnackBar
+    private snackBar: SnackBarServiceService
   ) { }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class CreateEvalBasedOnComponent implements OnInit {
           // console.log('[create-eval-based.components.ts | ngOnInit]:  - evalData', this.evalData);
         },
         err => {
-          this.openSnackBar(err.messageToUser, 'snackBarError');
+          this.snackBar.open(err.messageToUser, 'snackBarError');
           // console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
@@ -103,23 +103,17 @@ export class CreateEvalBasedOnComponent implements OnInit {
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;
         if (data.isDone === true) {
-          this.openSnackBar(data.message, 'snackBarSuccess');
+          this.snackBar.open(data.message, 'snackBarSuccess');
         } else {
-          this.openSnackBar(data.message, 'snackBarError');
+          this.snackBar.open(data.message, 'snackBarError');
         }
       },
         (err: EvalTrackerError) => {
-          this.openSnackBar(err.messageToUser, 'snackBarError');
+          this.snackBar.open(err.messageToUser, 'snackBarError');
         }
       );
     this.createEvalForm.get('score').setValue('');
     this.createEvalForm.markAsPristine();
   }
 
-  openSnackBar(message, type) {
-    this.snackBar.open(message, 'OK', {
-      duration: 3000,
-      panelClass: [type],
-    });
-  }
 }

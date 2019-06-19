@@ -66,12 +66,18 @@ export class EvalServiceService {
       );
   }
 
-  retrieveGeneralGraphData(graphType: String): Observable<MutliStackedGraphData[]> {
-    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?graphType=${graphType}`);
+  retrieveGeneralGraphData(graphType: String): Observable<MutliStackedGraphData[] | EvalTrackerError> {
+    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?graphType=${graphType}`)
+    .pipe(
+      catchError(err => this.handleHttpError(err, 'update'))
+    );
   }
 
-  retrieveFilteredGraphData(field: String, data: String, graphType: String): Observable<MutliStackedGraphData[]> {
-    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`);
+  retrieveFilteredGraphData(field: String, data: String, graphType: String): Observable<MutliStackedGraphData[] | EvalTrackerError> {
+    return this.http.get<MutliStackedGraphData[]>(`${this.baseUrl}/getgraphdata?field=${field}&data=${data}&graphType=${graphType}`)
+    .pipe(
+      catchError(err => this.handleHttpError(err, 'update'))
+    );
   }
 
   private handleHttpError(error: HttpErrorResponse, flag: String): Observable<EvalTrackerError> {

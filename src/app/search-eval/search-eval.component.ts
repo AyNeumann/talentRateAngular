@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
+import { SnackBarServiceService } from '../common/snack-bar-service.service';
 import { Eval } from 'src/app/models/eval';
 import { BdInfos } from 'src/app/models/dbInfos';
 import { MutliStackedGraphData } from '../models/graphData';
@@ -9,7 +10,6 @@ import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { MatSnackBar } from '@angular/material';
 
 
 
@@ -63,7 +63,7 @@ export class SearchEvalComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar) { }
+    private snackBar: SnackBarServiceService) { }
 
   ngOnInit() {
     this.getAllDatas();
@@ -80,7 +80,7 @@ export class SearchEvalComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.evalData);
       },
       (err: EvalTrackerError) => {
-        this.openSnackBar(err.messageToUser, 'snackBarError');
+        this.snackBar.open(err.messageToUser, 'snackBarError');
         this.dataError = true;
       }
     );
@@ -110,7 +110,7 @@ export class SearchEvalComponent implements OnInit {
         this.dataObtained = true;
       },
       (err: EvalTrackerError) => {
-        this.openSnackBar(err.messageToUser, 'snackBarError');
+        this.snackBar.open(err.messageToUser, 'snackBarError');
         this.dataError = true;
       }
     );
@@ -144,21 +144,15 @@ export class SearchEvalComponent implements OnInit {
         }
       },
       (err: EvalTrackerError) => {
-        this.openSnackBar(err.messageToUser, 'snackBarError');
+        this.snackBar.open(err.messageToUser, 'snackBarError');
         this.dataError = true;
       },
       () => {
-        this.openSnackBar('Eval supprimée', 'snackBarSuccess');
+        this.snackBar.open('Eval supprimée', 'snackBarSuccess');
       }
     );
   }
 
-  openSnackBar(message, type) {
-    this.snackBar.open(message, 'OK', {
-      duration: 5000,
-      panelClass: [type],
-    });
-  }
 }
 
 
