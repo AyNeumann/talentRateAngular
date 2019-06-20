@@ -30,25 +30,31 @@ export class CreateEvalBasedOnComponent implements OnInit {
 
   ngOnInit() {
     this.initialisationForm();
-    this.route.params.subscribe((params: Params) => {
+    const resolvedEval: Eval | EvalTrackerError = this.route.snapshot.data['resolvedEval'];
+    if (resolvedEval instanceof EvalTrackerError) {
+      this.snackBar.open(resolvedEval.messageToUser, 'snackBarError');
+      console.log('EvalTrackerError');
+    } else {
+      this.evalData = resolvedEval;
+      this.formUpdating();
+      console.log('[create-eval-based-on.component.ts | ngOnInit] - resolvedEval: ', resolvedEval);
+      this.evalId = this.route.snapshot.paramMap.get('evalId');
+    }
+    /* this.route.params.subscribe((params: Params) => {
       this.evalId = params['evalId'];
       this.evalService.retrieveEvalbyId(this.evalId).subscribe(
         (response: Eval) => {
           this.evalData = response;
-          // console.log('[create-eval-based.components.ts | ngOnInit]:  - response', response);
-          // console.log('[create-eval-based.components.ts | ngOnInit]:  - evalData', this.evalData);
         },
         err => {
           this.snackBar.open(err.messageToUser, 'snackBarError');
-          // console.log('[update-eval.components.ts | ngOnInit]: Cannot get eval');
         },
         () => {
-          // console.log('[create-eval-based.components.ts | ngOnInit]: Get eval');
           this.formUpdating();
         }
       );
     });
-    this.createEvalForm.markAsPristine();
+    this.createEvalForm.markAsPristine(); */
   }
 
   initialisationForm() {

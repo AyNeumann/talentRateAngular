@@ -49,7 +49,7 @@ import { initializer } from './utils/app-init';
     CreateEvalComponent,
     UpdateEvalComponent,
     CreateEvalBasedOnComponent,
-    LoaderComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

@@ -14,9 +14,10 @@ export class EvalResolverService implements Resolve<Eval | EvalTrackerError> {
 
   constructor(private evalService: EvalServiceService) { }
 
-  // TODO: faire en sorte que l'aplli ne charga pas la page de copy ou d'update ou que l'utilisateur soit renvoyé ver
+  // TODO: faire en sorte que l'aplli ne charga pas la page de copy ou d'update ou que l'utilisateur soit renvoyé vers
   // la page d'acceuil avec un message d'erreur.
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Eval | EvalTrackerError> {
+    console.log(this.evalService.retrieveEvalbyId(route.paramMap.get('evalId')));
     return this.evalService.retrieveEvalbyId(route.paramMap.get('evalId'))
     .pipe(
       catchError(err => of(err))
