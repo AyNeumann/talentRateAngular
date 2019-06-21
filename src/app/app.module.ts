@@ -42,6 +42,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializer } from './utils/app-init';
 
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,6 +77,7 @@ import { initializer } from './utils/app-init';
     MatNativeDateModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    RouterModule
   ],
   providers: [EnvServiceProvider, LoaderServiceService,
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
