@@ -42,8 +42,8 @@ export class CreateEvalComponent implements OnInit {
       homework: ['', Validators.required],
       given: [new Date(), Validators.required],
       student: ['', Validators.required],
-      score: ['', Validators.required],
-      obtainable: ['', Validators.required],
+      score: ['', [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]],
+      obtainable: ['', [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]]
     }, { validator: ScoreValidator.scoreValidator });
   }
 
@@ -62,7 +62,7 @@ export class CreateEvalComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime(),
     );
-    // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
+    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;

@@ -85,8 +85,8 @@ export class UpdateEvalComponent implements OnInit {
       homework: [this.evalData.homework, Validators.required],
       given: [this.evalDate, Validators.required],
       student: [this.evalData.student.name, Validators.required],
-      score: [this.evalData.score, Validators.required],
-      obtainable: [this.evalData.obtainable, Validators.required]
+      score: [this.evalData.score, [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]],
+      obtainable: [this.evalData.obtainable, [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]]
     }, { validator: ScoreValidator.scoreValidator });
   }
 
