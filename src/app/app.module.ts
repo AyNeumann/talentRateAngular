@@ -80,14 +80,14 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   providers: [EnvServiceProvider, LoaderServiceService,
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true},
-    /*{
+    {
       provide: APP_INITIALIZER,
       useFactory: initializer,
       multi: true,
       deps: [KeycloakService]
-    }*/],
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

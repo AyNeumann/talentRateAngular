@@ -21,14 +21,14 @@ export class EvalServiceService {
   constructor(private http: HttpClient, private env: EnvService) { }
 
   createEval(evalToSend: Eval): Observable<ReturnedEval | EvalTrackerError> {
-    return this.http.post<ReturnedEval>(`${this.baseUrl}/`, evalToSend )
+    return this.http.post<ReturnedEval>(`${this.baseUrl}`, evalToSend )
       .pipe(
         catchError(err => this.handleHttpError(err, 'create'))
       );
   }
 
   retrieveAllEvals(): Observable<Eval[] | EvalTrackerError> {
-    return this.http.get<Eval[]>(`${this.baseUrl}/`)
+    return this.http.get<Eval[]>(`${this.baseUrl}`)
       .pipe(
         catchError(err => this.handleHttpError(err, 'retrieve'))
       );
@@ -98,7 +98,8 @@ export class EvalServiceService {
     console.log(
       `Erreur lors de la ${action} des evals: \n`,
       'Http error number: ', dataError.errorNumber, '\n',
-      'Htpp error message:', dataError.message
+      'Htpp error message:', dataError.message, '\n',
+      'Details: ', error
     );
     return throwError(dataError);
   }
