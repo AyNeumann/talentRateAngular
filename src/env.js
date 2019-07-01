@@ -1,16 +1,16 @@
 (function (window) {
     window.__env = window.__env || {};
 
-    // API url
+    // API url 
     window.__env.apiUrl = 'http://localhost:8080/';
 
-    // KEYCLOAK url
+    // KEYCLOAK url - Keycloak url for authentification
     window.__env.KcUrl = 'http://localhost:8888/auth';
 
-    // KEYCLOAK realm
+    // KEYCLOAK realm - name of the realm which contains the security config for your app
     window.__env.KcRealm = 'talentraterealm';
 
-    // KEYCLOAK realm
+    // KEYCLOAK clientId - name of client Id in the realm  
     window.__env.KcClientId = 'TalentRateAngular';
 
 }(this));
