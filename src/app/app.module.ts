@@ -13,6 +13,7 @@ import { UpdateEvalComponent } from './update-eval/update-eval.component';
 import { CreateEvalBasedOnComponent } from './create-eval-based-on/create-eval-based-on.component';
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderServiceService } from './services/loader-service.service';
+import { EnvService } from './env.service';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 
@@ -84,7 +85,7 @@ import { RouterModule } from '@angular/router';
       provide: APP_INITIALIZER,
       useFactory: initializer,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, EnvService]
     },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true}],
