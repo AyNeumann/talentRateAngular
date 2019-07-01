@@ -32,7 +32,7 @@ To configure your [Keycloak-Angular module](https://www.npmjs.com/package/keyclo
     Go to env.js and write the appropriate values.
     Here is an example with the default values:
 
-    ````javascript
+    ```javascript
     // API url - back-end url
     window.__env.apiUrl = 'http://localhost:8080/';
 
@@ -44,7 +44,7 @@ To configure your [Keycloak-Angular module](https://www.npmjs.com/package/keyclo
 
     // KEYCLOAK clientId - name of client Id in the realm  
     window.__env.KcClientId = 'TalentRateAngular';
-    ````
+    ```
 
 ### Other useful docs:
  keycloak: https://www.keycloak.org/
