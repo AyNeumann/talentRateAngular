@@ -24,4 +24,4 @@ export const EnvServiceProvider = {
   provide: EnvService,
   useFactory: EnvServiceFactory,
   deps: []
-}
+};

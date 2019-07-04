@@ -1,4 +1,5 @@
 (function (window) {
+
     window.__env = window.__env || {};
 
     // API url 
@@ -12,5 +13,8 @@
 
     // KEYCLOAK clientId - name of client Id in the realm  
     window.__env.KcClientId = 'TalentRateAngular';
+
+    // KEYCLOAK client secret - secret identifier 
+    window.__env.KcSecretCredentials = 'd310055b-21da-4ec5-9942-5f89541a8eff';
 
 }(this));
