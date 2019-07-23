@@ -4,7 +4,7 @@ import { Credentials } from 'node_modules/keycloak-angular/lib/core/interfaces/k
 
 
 
-export function initializer(keycloak: KeycloakService, env: EnvService, credentials: Credentials): () => Promise<any> {
+export function initializer(keycloak: KeycloakService, env: EnvService): () => Promise<any> {
   const secret: Credentials = {
     secret: env.KcSecretCredentials
   };

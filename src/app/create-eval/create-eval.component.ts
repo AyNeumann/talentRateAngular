@@ -62,16 +62,10 @@ export class CreateEvalComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime(),
     );
-    console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;
-        console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        if (data.isDone === true) {
-          this.snackBar.open(data.message, 'snackBarSuccess');
-        } else {
-          this.snackBar.open(data.message, 'snackBarError');
-        }
+        this.manageSnackBar(data.isDone, data.message);
         this.evalId = data.evalId;
         if (data.isDone === true && this.copyingEval === true) {
           this.router.navigate(['/copyeval', this.evalId]);
@@ -83,6 +77,14 @@ export class CreateEvalComponent implements OnInit {
       );
     this.createEvalForm.get('score').setValue('');
     this.createEvalForm.markAsPristine();
+  }
+
+  manageSnackBar(isDone: boolean, message: string) {
+    if (isDone === true) {
+      this.snackBar.open(message, 'snackBarSuccess');
+    } else {
+      this.snackBar.open(message, 'snackBarError');
+    }
   }
 
   copyEval() {
