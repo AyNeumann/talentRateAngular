@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'search', component: SearchEvalComponent},
   {path: 'create', component: CreateEvalComponent},
   {path: 'updateeval/:evalId', component: UpdateEvalComponent, resolve: {resolvedEval: EvalResolverService} },
-  {path: 'copyeval/:evalId', component: CreateEvalBasedOnComponent },
+  {path: 'copyeval/:evalId', component: CreateEvalBasedOnComponent, resolve: {resolvedEval: EvalResolverService} },
 ];
 
 @NgModule({

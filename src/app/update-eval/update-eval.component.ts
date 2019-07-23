@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
+import { SnackBarServiceService } from '../common/snack-bar-service.service';
 import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
-import { MatSnackBar } from '@angular/material';
 import { EvalTrackerError } from '../models/evalTrackerError';
 
 @Component({
@@ -25,14 +25,14 @@ export class UpdateEvalComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private evalService: EvalServiceService,
-    private snackBar: MatSnackBar
+    private snackBar: SnackBarServiceService
   ) { }
 
   ngOnInit() {
     this.initialisationForm();
     const resolvedEval: Eval | EvalTrackerError = this.route.snapshot.data['resolvedEval'];
     if (resolvedEval instanceof EvalTrackerError) {
-      this.openSnackBar(resolvedEval.messageToUser, 'snackBarError');
+      this.snackBar.open(resolvedEval.messageToUser, 'snackBarError');
     } else {
       this.evalData = resolvedEval;
       this.formUpdating();
@@ -85,8 +85,8 @@ export class UpdateEvalComponent implements OnInit {
       homework: [this.evalData.homework, Validators.required],
       given: [this.evalDate, Validators.required],
       student: [this.evalData.student.name, Validators.required],
-      score: [this.evalData.score, Validators.required],
-      obtainable: [this.evalData.obtainable, Validators.required]
+      score: [this.evalData.score, [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]],
+      obtainable: [this.evalData.obtainable, [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]]
     }, { validator: ScoreValidator.scoreValidator });
   }
 
@@ -111,23 +111,16 @@ export class UpdateEvalComponent implements OnInit {
       .subscribe((data: ReturnedEval) => {
         this.evalService.evalToSend = data;
         if (data.isDone === true) {
-          this.openSnackBar(data.message, 'snackBarSuccess');
+          this.snackBar.open(data.message, 'snackBarSuccess');
         } else {
-          this.openSnackBar(data.message, 'snackBarError');
+          this.snackBar.open(data.message, 'snackBarError');
         }
       },
         (err: EvalTrackerError) => {
-          this.openSnackBar(err.messageToUser, 'snackBarError');
+          this.snackBar.open(err.messageToUser, 'snackBarError');
         }
       );
     this.updateEvalForm.markAsPristine();
-  }
-
-  openSnackBar(message, type) {
-    this.snackBar.open(message, 'OK', {
-      duration: 3000,
-      panelClass: [type],
-    });
   }
 
 }

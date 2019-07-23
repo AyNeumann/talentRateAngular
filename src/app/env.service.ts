@@ -11,5 +11,17 @@ export class EnvService {
   // API url
   public apiUrl = '';
 
+  // KEYCLOAK url
+  public KcUrl = '';
+
+  // KEYCLOAK realm
+  public KcRealm = '';
+
+  // KEYCLOAK client id
+  public KcClientId = '';
+
+  // KEYCLOAK client secret
+  public KcSecretCredentials = '';
+
   constructor() { }
 }

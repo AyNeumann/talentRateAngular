@@ -4,9 +4,10 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, Valid
 import { Eval, ReturnedEval } from 'src/app/models/eval';
 import { EvalTrackerError } from '../models/evalTrackerError';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
+import { SnackBarServiceService } from '../common/snack-bar-service.service';
 import { ScoreValidator} from 'src/app/validators/score-validator';
 
-import { MatSnackBar } from '@angular/material';
+
 
 
 
@@ -24,8 +25,8 @@ export class CreateEvalComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private evalService: EvalServiceService,
     private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar) { }
+    private snackBar: SnackBarServiceService,
+    private router: Router) { }
 
   ngOnInit() {
     this.initialisationForm();
@@ -41,8 +42,8 @@ export class CreateEvalComponent implements OnInit {
       homework: ['', Validators.required],
       given: [new Date(), Validators.required],
       student: ['', Validators.required],
-      score: ['', Validators.required],
-      obtainable: ['', Validators.required],
+      score: ['', [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]],
+      obtainable: ['', [Validators.required, Validators.pattern('^[0-9][0-9]?[0-9]?$')]]
     }, { validator: ScoreValidator.scoreValidator });
   }
 
@@ -61,34 +62,29 @@ export class CreateEvalComponent implements OnInit {
       formValue['obtainable'],
       formValue['given'].getTime(),
     );
-    // console.log('[create-eval.components.ts | onSubmit - newEval]: ', newEval);
     this.evalService.createEval(newEval)
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;
-        console.log('[create-eval.components.ts | onSubmit - data]: ', data);
-        if (data.isDone === true) {
-          this.openSnackBar(data.message, 'snackBarSuccess');
-        } else {
-          this.openSnackBar(data.message, 'snackBarError');
-        }
+        this.manageSnackBar(data.isDone, data.message);
         this.evalId = data.evalId;
         if (data.isDone === true && this.copyingEval === true) {
           this.router.navigate(['/copyeval', this.evalId]);
         }
       },
         (err: EvalTrackerError) => {
-          this.openSnackBar(err.messageToUser, 'snackBarError');
+          this.snackBar.open(err.messageToUser, 'snackBarError');
         }
       );
     this.createEvalForm.get('score').setValue('');
     this.createEvalForm.markAsPristine();
   }
 
-  openSnackBar(message, type) {
-    this.snackBar.open(message, 'OK', {
-      duration: 3000,
-      panelClass: [type],
-    });
+  manageSnackBar(isDone: boolean, message: string) {
+    if (isDone === true) {
+      this.snackBar.open(message, 'snackBarSuccess');
+    } else {
+      this.snackBar.open(message, 'snackBarError');
+    }
   }
 
   copyEval() {
