@@ -10,9 +10,6 @@ import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-
-
-
 @Component({
   selector: 'app-search-eval',
   templateUrl: './search-eval.component.html',

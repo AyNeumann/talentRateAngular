@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { Eval, ReturnedEval } from 'src/app/models/eval';
+import { Eval, ReturnedEval, IEval } from 'src/app/models/eval';
 import { BdInfos } from 'src/app/models/dbInfos';
 import { EnvService } from '../env.service';
 import { EvalTrackerError } from '../models/evalTrackerError';
@@ -20,7 +20,7 @@ export class EvalServiceService {
 
   constructor(private http: HttpClient, private env: EnvService) { }
 
-  createEval(evalToSend: Eval): Observable<ReturnedEval | EvalTrackerError> {
+  createEval(evalToSend: IEval): Observable<ReturnedEval | EvalTrackerError> {
     return this.http.post<ReturnedEval>(`${this.baseUrl}`, evalToSend )
       .pipe(
         catchError(err => this.handleHttpError(err, 'create'))

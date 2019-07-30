@@ -34,4 +34,18 @@ export class ReturnedEval {
     ) { }
 }
 
+export interface IEval {
+    evalId: string;
+    school: string;
+    promotion: string;
+    module: string;
+    category: string;
+    skill: string;
+    homework: string;
+    student: Student;
+    score: number;
+    obtainable: number;
+    given: number;
+}
+
 

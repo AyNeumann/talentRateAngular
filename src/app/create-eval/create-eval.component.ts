@@ -1,26 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
-import { Eval, ReturnedEval } from 'src/app/models/eval';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReturnedEval } from 'src/app/models/eval';
 import { EvalTrackerError } from '../models/evalTrackerError';
 import { EvalServiceService } from 'src/app/services/eval-service.service';
 import { SnackBarServiceService } from '../common/snack-bar-service.service';
 import { ScoreValidator} from 'src/app/validators/score-validator';
-
-
-
-
 
 @Component({
   selector: 'app-create-eval',
   templateUrl: './create-eval.component.html',
   styleUrls: ['./create-eval.component.css']
 })
-export class CreateEvalComponent implements OnInit {
+export class CreateEvalComponent implements OnInit, OnDestroy {
 
-  createEvalForm: FormGroup;
-  copyingEval = false;
-  private evalId: String = '';
+  private createEvalForm: FormGroup;
+  private copyingEval: boolean = false;
+  private evalId: string = '';
+  private subcription;
 
   constructor(private formBuilder: FormBuilder,
     private evalService: EvalServiceService,
@@ -47,22 +44,15 @@ export class CreateEvalComponent implements OnInit {
     }, { validator: ScoreValidator.scoreValidator });
   }
 
+  // convenience getter for easy access to form fields
+  get f() { return this.createEvalForm.controls; }
+
   onSubmit() {
-    const formValue = this.createEvalForm.value;
-    const newEval = new Eval(
-      '',
-      formValue['school'],
-      formValue['promotion'],
-      formValue['module'],
-      formValue['category'],
-      formValue['skill'],
-      formValue['homework'],
-      formValue['student'],
-      formValue['score'],
-      formValue['obtainable'],
-      formValue['given'].getTime(),
-    );
-    this.evalService.createEval(newEval)
+    if (this.createEvalForm.invalid) {
+      return;
+    }
+
+    this.subcription = this.evalService.createEval(this.createEvalForm.value)
       .subscribe(
         (data: ReturnedEval) => { this.evalService.evalToSend = data;
         this.manageSnackBar(data.isDone, data.message);
@@ -89,5 +79,9 @@ export class CreateEvalComponent implements OnInit {
 
   copyEval() {
     this.copyingEval = true;
+  }
+
+  ngOnDestroy(): void {
+    this.subcription.unsubscribe();
   }
 }
